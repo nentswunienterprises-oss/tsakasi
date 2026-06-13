@@ -90,7 +90,7 @@ export function HomePage() {
           <p className="eyebrow">Fleet Layer</p>
           <h2>Green Scooter ZA vehicle formats make the movement layer visible.</h2>
           <p>
-            The fleet strategy is not theoretical. The Atlas and Ona introduce
+            The Atlas and Ona introduce
             compact enclosed electric vehicle formats that align with local
             merchant routes, repeat parcel movement, and the clean logistics
             thesis behind Tsa Kasi.

@@ -35,7 +35,7 @@ export const positionStatements = [
 export const businessPain = [
   "Delivery demand may already exist, but internal execution remains operationally draining.",
   "Fuel-linked delivery costs make local fulfillment difficult to price sustainably.",
-  "Drivers, delays, complaints, and proof-of-delivery issues pull management attention away from the core business.",
+  "Drivers, delays, and complaints pull management attention away from the core business.",
   "Delivery capability is needed without building a full in-house logistics department.",
 ];
 
@@ -53,7 +53,7 @@ export const operatingLayers = [
   },
   {
     title: "Logistics layer",
-    body: "Vehicles, drivers, dispatch, pickups, drop-offs, OTP verification, and proof-of-delivery define execution quality.",
+    body: "Vehicles, drivers, dispatch, pickups, and drop-offs define execution quality.",
   },
   {
     title: "Energy layer",

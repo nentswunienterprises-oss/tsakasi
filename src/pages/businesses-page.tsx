@@ -9,7 +9,7 @@ export function BusinessesPage() {
       <Hero
         eyebrow="For Businesses"
         title="A lower-burden movement layer for businesses with local delivery demand."
-        description="Tsa Kasi Logistics is focused on businesses that require local fulfillment capability without absorbing the full burden of riders, fuel pressure, complaints, and proof-of-delivery management internally."
+        description="Tsa Kasi Logistics is focused on businesses that require local fulfillment capability without absorbing the full burden of riders, fuel pressure, and complaints internally."
         primaryLabel="Register Business Pilot"
         primaryTo="/pilot"
         primaryState={{ scrollToForm: true }}
@@ -56,7 +56,7 @@ export function BusinessesPage() {
           <ul className="clean-list">
             <li>Delivery execution without building a full in-house fleet.</li>
             <li>More predictable local fulfillment and customer coverage.</li>
-            <li>Better visibility, verification, and proof-of-delivery discipline.</li>
+            <li>Better visibility.</li>
             <li>Lower friction as order volume grows.</li>
           </ul>
         </article>

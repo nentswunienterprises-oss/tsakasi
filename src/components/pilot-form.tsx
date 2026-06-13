@@ -171,7 +171,7 @@ export function PilotForm() {
         label="Main delivery pain"
         value={form.mainDeliveryPain}
         onChange={(value) => setForm((current) => ({ ...current, mainDeliveryPain: value }))}
-        placeholder="Fuel costs, delays, rider management, failed deliveries, proof of delivery..."
+        placeholder="Fuel costs, delays, rider management, failed deliveries..."
       />
 
       {error ? <p className="form-error">{error}</p> : null}

@@ -9,7 +9,7 @@ export function PartnersPage() {
       <Hero
         eyebrow="For Platforms And Courier Partners"
         title="The closer logistics gets to the customer door, the more local execution matters."
-        description="Tsa Kasi Logistics is focused on the part of logistics that becomes expensive in regional nodes: driver allocation, route density, customer coordination, proof-of-delivery, failed attempts, and fuel-sensitive final-mile operations."
+        description="Tsa Kasi Logistics is focused on the part of logistics that becomes expensive in regional nodes: driver allocation, route density, customer coordination, failed attempts, and fuel-sensitive final-mile operations."
         primaryLabel="Review Operating Model"
         primaryTo="/model"
         sideLabel="Execution Relevance"
@@ -54,7 +54,7 @@ export function PartnersPage() {
           <ul className="clean-list">
             <li>Reliable local delivery execution in Waterberg.</li>
             <li>Reduced last-mile fleet burden for partner networks.</li>
-            <li>Proof-of-delivery, OTP verification, and route discipline.</li>
+            <li>Route discipline.</li>
             <li>A local operating layer that can support recurring parcel volume.</li>
           </ul>
         </article>
