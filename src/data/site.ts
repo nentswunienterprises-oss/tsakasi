@@ -13,7 +13,7 @@ export const problemPoints = [
   },
   {
     title: "Fragmented final-mile execution",
-    body: "The hardest part of commerce is often the last leg to the customer door: scattered addresses, delays, failed attempts, return trips, and manual coordination.",
+    body: "The hardest part of commerce is often the last leg to the customer door: scattered addresses, delays, failed attempts, and return trips.",
   },
   {
     title: "Merchants carry the burden",
@@ -28,7 +28,7 @@ export const problemPoints = [
 export const positionStatements = [
   "Not a food delivery marketplace.",
   "Not a consumer ordering app.",
-  "Not a petrol-heavy informal courier model.",
+  "Not a petrol-heavy courier model.",
   "Regional clean logistics infrastructure for local commerce.",
 ];
 
