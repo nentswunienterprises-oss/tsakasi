@@ -61,14 +61,6 @@ export function Shell() {
                 {item.label}
               </NavLink>
             ))}
-            <NavLink
-              to="/admin"
-              className={({ isActive }) =>
-                `nav-link${isActive ? " nav-link-active" : ""}`
-              }
-            >
-              Admin
-            </NavLink>
           </nav>
 
           <div className="header-actions">

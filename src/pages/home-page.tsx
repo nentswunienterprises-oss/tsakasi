@@ -1,10 +1,12 @@
 import { FleetGallery } from "@/components/fleet-gallery";
+import { HomeSlideshow } from "@/components/home-slideshow";
 import { Link } from "react-router-dom";
 
 import { Hero } from "@/components/hero";
 import {
   fleetGallery,
   fleetReferences,
+  homeOnaSlideshow,
   problemPoints,
   positionStatements,
   validationProof,
@@ -67,6 +69,11 @@ export function HomePage() {
           ))}
         </div>
       </section>
+
+      <HomeSlideshow
+        eyebrow="Ona Utility Reference"
+        items={homeOnaSlideshow}
+      />
 
       <section className="spotlight-panel">
         <div className="spotlight-copy">

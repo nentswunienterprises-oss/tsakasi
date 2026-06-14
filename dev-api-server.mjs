@@ -95,6 +95,8 @@ const requiredFields = [
 
 const server = createServer(async (req, res) => {
   const requestUrl = new URL(req.url || "/", `http://localhost:${PORT}`);
+  
+  console.log(`[${new Date().toISOString()}] ${req.method} ${requestUrl.pathname}`);
 
   if (req.method === "POST" && requestUrl.pathname === "/api/admin/auth") {
     const body = await parseBody(req).catch(() => null);
@@ -167,33 +169,43 @@ const server = createServer(async (req, res) => {
     for (const field of requiredFields) {
       const value = body[field];
       if (typeof value !== "string" || !value.trim()) {
+        console.error(`Validation failed for field '${field}': received ${typeof value} = ${JSON.stringify(value)}`);
         sendJson(res, 400, {
-          error: "Please complete every field before submitting.",
+          error: `Please complete every field before submitting. Missing: ${field}`,
         });
         return;
       }
     }
 
     if (supabase) {
-      const { error } = await supabase.from("business_pilot_submissions").insert([
-        {
-          business_name: body.businessName,
-          contact_person: body.contactPerson,
-          business_type: body.businessType,
-          town: body.town,
-          currently_offer_delivery: body.currentlyOfferDelivery,
-          current_delivery_method: body.currentDeliveryMethod,
-          average_deliveries_per_week: body.averageDeliveriesPerWeek,
-          main_delivery_pain: body.mainDeliveryPain,
-          local_delivery_partner_interest: body.localDeliveryPartnerInterest,
-          short_interview_interest: body.shortInterviewInterest,
-          whatsapp_number: body.whatsappNumber,
-          email: body.email,
-          source: "tsa-kasi-logistics-site",
-        },
-      ]);
+      try {
+        const { error } = await supabase.from("business_pilot_submissions").insert([
+          {
+            business_name: body.businessName,
+            contact_person: body.contactPerson,
+            business_type: body.businessType,
+            town: body.town,
+            currently_offer_delivery: body.currentlyOfferDelivery,
+            current_delivery_method: body.currentDeliveryMethod,
+            average_deliveries_per_week: body.averageDeliveriesPerWeek,
+            main_delivery_pain: body.mainDeliveryPain,
+            local_delivery_partner_interest: body.localDeliveryPartnerInterest,
+            short_interview_interest: body.shortInterviewInterest,
+            whatsapp_number: body.whatsappNumber,
+            email: body.email,
+            source: "tsa-kasi-logistics-site",
+          },
+        ]);
 
-      if (error) {
+        if (error) {
+          console.error("Supabase insert error:", error);
+          sendJson(res, 500, {
+            error: `Database error: ${error.message}`,
+          });
+          return;
+        }
+      } catch (err) {
+        console.error("Supabase submission exception:", err);
         sendJson(res, 500, {
           error: "Submission could not be saved right now. Please try again.",
         });

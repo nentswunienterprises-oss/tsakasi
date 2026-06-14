@@ -1,7 +1,8 @@
+import { HomeSlideshow } from "@/components/home-slideshow";
 import { Link } from "react-router-dom";
 
 import { Hero } from "@/components/hero";
-import { businessPain, businessSegments } from "@/data/site";
+import { businessPain, businessSegments, homeOnaSlideshow } from "@/data/site";
 
 export function BusinessesPage() {
   return (
@@ -80,6 +81,11 @@ export function BusinessesPage() {
           </Link>
         </div>
       </section>
+
+      <HomeSlideshow
+        eyebrow="Ona Utility Reference"
+        items={homeOnaSlideshow}
+      />
     </div>
   );
 }

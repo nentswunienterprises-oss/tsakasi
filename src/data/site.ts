@@ -133,6 +133,29 @@ export const fleetGallery = {
   ],
 };
 
+export const homeOnaSlideshow = [
+  {
+    src: "/fleet/Ona/p-two 4.webp",
+    alt: "Green Scooter ZA Ona side utility profile on a studio background.",
+  },
+  {
+    src: "/fleet/Ona/p-two 6.webp",
+    alt: "Green Scooter ZA Ona rear cargo loading view with cartons.",
+  },
+  {
+    src: "/fleet/Ona/p-two 8.webp",
+    alt: "Green Scooter ZA Ona closed rear cargo view on a studio background.",
+  },
+  {
+    src: "/fleet/Ona/p-two 9.webp",
+    alt: "Green Scooter ZA Ona charging view beside a charging unit.",
+  },
+  {
+    src: "/fleet/Ona/p-two 10.webp",
+    alt: "Green Scooter ZA Ona utility access panel detail.",
+  },
+];
+
 export const validationProof = [
   "Businesses understand the problem.",
   "Businesses are willing to participate in commercial discovery.",
@@ -143,8 +166,12 @@ export const validationProof = [
 export const businessSegments = [
   "Restaurants and takeaway operators",
   "Pharmacies and recurring health-product delivery businesses",
-  "Retailers, hardware stores, grocery stores, and township businesses",
-  "Local e-commerce sellers and regional SMEs",
+  "Grocery stores and convenience stores",
+  "Retailers",
+  "Hardware stores",
+  "Township businesses",
+  "Local e-commerce sellers",
+  "Regional SMEs",
 ];
 
 export const partnerSegments = [
