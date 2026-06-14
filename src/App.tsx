@@ -8,6 +8,7 @@ import { ModelPage } from "@/pages/model-page";
 import { PartnersPage } from "@/pages/partners-page";
 import { PilotPage } from "@/pages/pilot-page";
 import { ThankYouPage } from "@/pages/thank-you-page";
+import { AdminDashboardPage } from "@/pages/admin-dashboard";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -33,6 +34,7 @@ export default function App() {
           <Route element={<PilotPage />} path="pilot" />
           <Route element={<ThankYouPage />} path="pilot/thank-you" />
         </Route>
+        <Route element={<AdminDashboardPage />} path="/admin" />
       </Routes>
     </>
   );

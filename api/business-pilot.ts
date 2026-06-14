@@ -1,3 +1,5 @@
+import { createClient } from "@supabase/supabase-js";
+
 const requiredFields = [
   "businessName",
   "contactPerson",
@@ -25,6 +27,19 @@ type VercelLikeResponse = {
   json: (body: unknown) => void;
 };
 
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+
+function normalizeSupabaseUrl(url: string) {
+  return url.replace(/\/rest\/v1\/?$/, "");
+}
+
+// Initialize Supabase if credentials are available
+const supabase =
+  supabaseUrl && supabaseKey
+    ? createClient(normalizeSupabaseUrl(supabaseUrl), supabaseKey)
+    : null;
+
 export default async function handler(
   req: VercelLikeRequest,
   res: VercelLikeResponse,
@@ -45,6 +60,53 @@ export default async function handler(
     }
   }
 
+  const submission = payload as BusinessPilotPayload;
+
+  // Save to Supabase if configured
+  if (supabase) {
+    try {
+      const { error: dbError } = await supabase
+        .from("business_pilot_submissions")
+        .insert([
+          {
+            business_name: submission.businessName,
+            contact_person: submission.contactPerson,
+            business_type: submission.businessType,
+            town: submission.town,
+            currently_offer_delivery: submission.currentlyOfferDelivery,
+            current_delivery_method: submission.currentDeliveryMethod,
+            average_deliveries_per_week: submission.averageDeliveriesPerWeek,
+            main_delivery_pain: submission.mainDeliveryPain,
+            local_delivery_partner_interest:
+              submission.localDeliveryPartnerInterest,
+            short_interview_interest: submission.shortInterviewInterest,
+            whatsapp_number: submission.whatsappNumber,
+            email: submission.email,
+            source: "tsa-kasi-logistics-site",
+          },
+        ]);
+
+      if (dbError) {
+        console.error("Supabase error:", dbError);
+        res
+          .status(500)
+          .json({
+            error: "Submission could not be saved right now. Please try again.",
+          });
+        return;
+      }
+    } catch (err) {
+      console.error("Database submission error:", err);
+      res
+        .status(500)
+        .json({
+          error: "Submission could not be saved right now. Please try again.",
+        });
+      return;
+    }
+  }
+
+  // Also send to external webhook if configured
   const webhookUrl = process.env.PILOT_WEBHOOK_URL;
 
   if (webhookUrl) {
@@ -56,19 +118,21 @@ export default async function handler(
       body: JSON.stringify({
         source: "tsa-kasi-logistics-site",
         submittedAt: new Date().toISOString(),
-        payload,
+        payload: submission,
       }),
     });
 
     if (!webhookResponse.ok) {
       res
         .status(502)
-        .json({ error: "Submission could not be saved right now. Please try again." });
+        .json({
+          error: "Submission could not be saved right now. Please try again.",
+        });
       return;
     }
   }
 
-  console.log("Tsa Kasi business pilot submission", payload);
+  console.log("Tsa Kasi business pilot submission", submission);
 
   res.status(200).json({ success: true });
 }

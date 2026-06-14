@@ -911,3 +911,219 @@ textarea {
     padding-right: 0;
   }
 }
+
+/* Admin Dashboard Styles */
+.admin-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+
+.admin-login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.admin-login-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.admin-login-box h1 {
+  margin: 0 0 1.5rem;
+  font-family: "Inter Tight", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.admin-login-box form {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-login-box .form-group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.admin-login-box label {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.admin-login-box input {
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  background: rgba(7, 10, 14, 0.84);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.admin-login-box input:focus {
+  outline: none;
+  border-color: rgba(0, 180, 216, 0.55);
+  background: rgba(9, 14, 20, 0.96);
+}
+
+.admin-login-box input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-login-box button {
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, var(--orange-deep), var(--orange));
+  color: #120902;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 160ms ease;
+}
+
+.admin-login-box button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.admin-login-box button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-login-box .error-message {
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 1rem;
+  background: rgba(255, 107, 107, 0.1);
+  color: #ffd6d6;
+  font-size: 0.9rem;
+}
+
+.admin-dashboard {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-family: "Inter Tight", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.logout-btn {
+  padding: 0.7rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.logout-btn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-content {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.admin-content .loading,
+.admin-content .error-message,
+.admin-content .empty-state {
+  padding: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  background: var(--panel);
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.admin-content .error-message {
+  border-color: rgba(255, 107, 107, 0.3);
+  background: rgba(255, 107, 107, 0.1);
+  color: #ffd6d6;
+}
+
+.submissions-list {
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.submissions-count {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.submissions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.submissions-table thead {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.submissions-table th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.submissions-table td {
+  padding: 1rem 1.5rem;
+  color: var(--muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.submissions-table a {
+  color: var(--orange);
+  text-decoration: underline;
+}
+
+.submissions-table a:hover {
+  color: var(--orange-deep);
+}
+
+.submission-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
