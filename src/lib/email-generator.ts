@@ -168,7 +168,7 @@ export function buildEmailHtml(
 ) {
   const { variables, htmlBody } = document;
   const logoMarkup = logoSource
-    ? `<img src="${escapeHtmlAttribute(logoSource)}" alt="Tsa Kasi Logistics logo" width="140" style="display: block; width: 140px; height: auto; margin: 0 auto;" />`
+    ? `<img src="${escapeHtmlAttribute(logoSource)}" alt="Tsa Kasi Logistics logo" width="150" style="display: block; width: 150px; height: auto; margin: 0 auto;" />`
     : `<div style="display: inline-block; color: #ff9b05; font-size: 26px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Tsa Kasi</div>`;
 
   return `<!doctype html>
@@ -223,56 +223,68 @@ export function buildEmailHtml(
     </style>
   </head>
   <body>
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #eef3f7; margin: 0; padding: 24px 0;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: linear-gradient(180deg, #edf1f5 0%, #e5ebf1 100%); margin: 0; padding: 32px 0;">
       <tr>
         <td align="center">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 720px; background-color: #ffffff; border-collapse: collapse; border-radius: 22px; overflow: hidden;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 760px; background-color: #fefefe; border-collapse: collapse; border-radius: 28px; overflow: hidden; box-shadow: 0 28px 80px rgba(7, 18, 28, 0.14);">
             <tr>
               <td style="padding: 0;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #050505;">
                   <tr>
-                    <td width="20" style="background-color: #00aeef; font-size: 0; line-height: 0;">&nbsp;</td>
-                    <td style="background-color: #07121c; padding: 24px 28px;">
+                    <td width="22" style="background: linear-gradient(180deg, #11bfff 0%, #00aeef 100%); font-size: 0; line-height: 0;">&nbsp;</td>
+                    <td style="padding: 34px 34px 30px 34px;">
                       <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td align="center" style="padding-bottom: 14px;">
+                          <td align="center" style="padding-bottom: 12px;">
                             ${logoMarkup}
                           </td>
                         </tr>
                         <tr>
-                          <td align="center" style="font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: #6fdcff; padding-bottom: 10px;">
+                          <td align="center" style="font-size: 11px; letter-spacing: 0.42em; text-transform: uppercase; color: #66d5ff; padding-bottom: 14px;">
                             Tsa Kasi Logistics
                           </td>
                         </tr>
                         <tr>
-                          <td align="center" style="font-size: 30px; line-height: 1.2; font-weight: 700; color: #ffffff; padding-bottom: 6px;">
+                          <td align="center" style="font-size: 38px; line-height: 1.08; font-weight: 800; color: #ffffff; letter-spacing: -0.04em; padding-bottom: 14px;">
                             ${escapeHtml(variables.documentTitle)}
                           </td>
                         </tr>
                         <tr>
-                          <td align="center" style="font-size: 15px; line-height: 1.6; color: #c6d6e4;">
-                            ${escapeHtml(variables.clientName)} | ${escapeHtml(variables.referenceNumber)} | ${escapeHtml(variables.date)}
+                          <td align="center">
+                            <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto; border-collapse: separate; border-spacing: 8px 0;">
+                              <tr>
+                                <td style="padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea;">
+                                  ${escapeHtml(variables.clientName)}
+                                </td>
+                                <td style="padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea;">
+                                  ${escapeHtml(variables.referenceNumber)}
+                                </td>
+                                <td style="padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea;">
+                                  ${escapeHtml(variables.date)}
+                                </td>
+                              </tr>
+                            </table>
                           </td>
                         </tr>
                       </table>
                     </td>
-                    <td width="20" style="background: linear-gradient(180deg, #ff9a1a 0%, #ff8a00 100%); font-size: 0; line-height: 0;">&nbsp;</td>
+                    <td width="22" style="background: linear-gradient(180deg, #ff9a1a 0%, #ff8a00 100%); font-size: 0; line-height: 0;">&nbsp;</td>
                   </tr>
                 </table>
               </td>
             </tr>
 
             <tr>
-              <td style="padding: 32px 38px 18px 38px;">
+              <td style="padding: 38px 42px 20px 42px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
                 <div class="content">${htmlBody}</div>
               </td>
             </tr>
 
             <tr>
-              <td style="padding: 0 38px 34px 38px;">
+              <td style="padding: 0 42px 36px 42px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
                   <tr>
-                    <td style="border-top: 1px solid #d6e2ea; padding-top: 18px; font-size: 13px; line-height: 1.7; color: #5d7081;">
+                    <td style="border-top: 1px solid #d8e0e8; padding-top: 18px; font-size: 13px; line-height: 1.7; color: #5d7081;">
                       ${escapeHtml(variables.footer)}
                     </td>
                   </tr>

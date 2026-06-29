@@ -8,9 +8,10 @@ type HomeSlideshowItem = {
 type HomeSlideshowProps = {
   items: HomeSlideshowItem[];
   eyebrow?: string;
+  showDots?: boolean;
 };
 
-export function HomeSlideshow({ items, eyebrow }: HomeSlideshowProps) {
+export function HomeSlideshow({ items, eyebrow, showDots = true }: HomeSlideshowProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -45,20 +46,22 @@ export function HomeSlideshow({ items, eyebrow }: HomeSlideshowProps) {
         </figure>
       </div>
 
-      <div className="home-slideshow-dots" aria-label="Ona image navigation">
-        {items.map((item, index) => (
-          <button
-            key={item.src}
-            type="button"
-            className={`home-slideshow-dot${
-              index === activeIndex ? " home-slideshow-dot-active" : ""
-            }`}
-            aria-label={`Show Ona image ${index + 1}`}
-            aria-pressed={index === activeIndex}
-            onClick={() => setActiveIndex(index)}
-          />
-        ))}
-      </div>
+      {showDots ? (
+        <div className="home-slideshow-dots" aria-label="Ona image navigation">
+          {items.map((item, index) => (
+            <button
+              key={item.src}
+              type="button"
+              className={`home-slideshow-dot${
+                index === activeIndex ? " home-slideshow-dot-active" : ""
+              }`}
+              aria-label={`Show Ona image ${index + 1}`}
+              aria-pressed={index === activeIndex}
+              onClick={() => setActiveIndex(index)}
+            />
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

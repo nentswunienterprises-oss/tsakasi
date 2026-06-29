@@ -54,6 +54,95 @@ textarea {
   min-height: 100vh;
 }
 
+.internal-tools-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(0, 174, 239, 0.08), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(255, 138, 0, 0.08), transparent 20%),
+    linear-gradient(180deg, #040506 0%, #06080b 100%);
+}
+
+.internal-tools-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(4, 5, 7, 0.92);
+  backdrop-filter: blur(18px);
+}
+
+.internal-tools-header-main,
+.internal-tools-route-links,
+.internal-tools-header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.internal-tools-header-main {
+  gap: 1rem;
+  min-width: 0;
+}
+
+.internal-tools-brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.internal-tools-brand-title,
+.internal-tools-brand-subtitle {
+  margin: 0;
+}
+
+.internal-tools-brand-title {
+  font-family: "Inter Tight", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.internal-tools-brand-subtitle {
+  color: var(--orange);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.internal-tools-route-links {
+  gap: 0.55rem;
+  padding-left: 0.4rem;
+}
+
+.internal-tools-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.7rem;
+  padding: 0.6rem 0.95rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--muted);
+  transition: 160ms ease;
+}
+
+.internal-tools-link:hover,
+.internal-tools-link-active {
+  border-color: rgba(0, 180, 216, 0.28);
+  background: rgba(0, 180, 216, 0.08);
+  color: var(--text);
+}
+
+.internal-tools-frame {
+  width: min(1440px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.4rem 0 2.6rem;
+}
+
 .site-shell {
   min-height: 100vh;
   background-image:
@@ -269,6 +358,7 @@ textarea {
   background-image: url("/fleet/Nova/nova-4.webp");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   opacity: 0.08;
   filter: grayscale(90%) contrast(0.75) brightness(0.65);
   pointer-events: none;
@@ -580,7 +670,7 @@ textarea {
 
 .fleet-gallery-panel {
   display: grid;
-  gap: 1rem;
+  gap: 1.6rem;
 }
 
 .nova-gallery-section {
@@ -591,6 +681,13 @@ textarea {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 0.85rem;
+}
+
+.nova-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding-bottom: 0.75rem;
 }
 
 .nova-tile {
@@ -615,6 +712,11 @@ textarea {
     gap: 1rem;
   }
 
+  .nova-list {
+    grid-template-columns: 1fr 1fr; /* two-column list on wide screens */
+    gap: 2rem;
+  }
+
   .nova-tile {
     min-height: 18rem;
   }
@@ -632,7 +734,7 @@ textarea {
 .fleet-layout {
   display: grid;
   grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.2fr);
-  gap: 1rem;
+  gap: 1.6rem;
 }
 
 .fleet-stage {
@@ -740,13 +842,13 @@ textarea {
 .fleet-gallery-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  gap: 1rem;
+  gap: 2.6rem;
 }
 
 .fleet-gallery-layout-uniform {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 2.6rem;
 }
 
 .fleet-gallery-lead,
@@ -766,7 +868,7 @@ textarea {
 .fleet-gallery-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.6rem;
 }
 
 .fleet-gallery-card {
@@ -923,6 +1025,65 @@ textarea {
 
 .generator-summary-card {
   width: min(100%, 32rem);
+}
+
+.generator-page-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.72fr);
+  gap: 1rem;
+  padding: 1.5rem 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: 1.8rem;
+  background: linear-gradient(145deg, rgba(10, 12, 16, 0.98), rgba(15, 18, 22, 0.94));
+  box-shadow: var(--shadow);
+}
+
+.generator-page-intro-copy {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.generator-page-intro-copy h1,
+.generator-page-intro-title {
+  margin: 0;
+  font-family: "Inter Tight", sans-serif;
+  letter-spacing: -0.05em;
+  line-height: 0.97;
+}
+
+.generator-page-intro-copy h1 {
+  max-width: 10.8ch;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+}
+
+.generator-page-intro-text {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.generator-page-intro-card {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+  padding: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.generator-page-intro-title {
+  font-size: 2rem;
+}
+
+.generator-page-intro-meta {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
 .generator-hero-internal {
@@ -1487,6 +1648,7 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .generator-page-intro,
   .generator-workbench,
   .generator-layout,
   .fleet-gallery-layout {
@@ -1543,6 +1705,25 @@ textarea {
   .page-frame {
     width: min(100% - 1rem, 1240px);
     padding-top: 1rem;
+  }
+
+  .internal-tools-frame {
+    width: min(100% - 1rem, 1440px);
+    padding-top: 1rem;
+  }
+
+  .internal-tools-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .internal-tools-header-main {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .internal-tools-route-links {
+    padding-left: 0;
   }
 
   .site-header {
@@ -1681,6 +1862,18 @@ textarea {
 
   .hero-copy {
     padding-right: 0;
+  }
+
+  .hero-panel::before {
+    background-size: 120% auto;
+    background-position: 62% 78%;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-panel::before {
+    background-size: 112% auto;
+    background-position: 62% 80%;
   }
 }
 
@@ -1898,4 +2091,44 @@ textarea {
 
 .submission-row:hover {
   background: rgba(255, 255, 255, 0.02);
+}
+
+/* Mobile-specific Nova gallery sizing for narrow devices (~365x729) */
+@media (max-width: 420px) {
+  .nova-gallery-section {
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+  }
+
+  .nova-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
+  }
+
+  .nova-tile {
+    border-radius: 0.9rem;
+    overflow: hidden;
+    padding: 0;
+    background: rgba(255,255,255,0.02);
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    display: block;
+    min-height: 0;
+    margin: 0;
+  }
+
+  .nova-tile img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0; /* image sits inside rounded tile */
+  }
+  
+  .nova-gallery-section {
+    margin-bottom: 1.5rem;
+  }
 }

@@ -139,6 +139,14 @@ export const homeOnaSlideshow = [
     alt: "Green Scooter ZA Ona side utility profile on a studio background.",
   },
   {
+    src: "/fleet/Ona/p-two 6.webp",
+    alt: "Green Scooter ZA Ona side utility in action on a town street.",
+  },
+  {
+    src: "/fleet/Ona/p-two 8.webp",
+    alt: "Green Scooter ZA Ona three-quarter view showing cargo area.",
+  },
+  {
     src: "/fleet/Ona/p-two 9.webp",
     alt: "Green Scooter ZA Ona charging view beside a charging unit.",
   },

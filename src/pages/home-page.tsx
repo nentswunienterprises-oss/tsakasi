@@ -75,7 +75,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <HomeSlideshow eyebrow="Ona Utility Reference" items={homeOnaSlideshow} />
+      <HomeSlideshow items={homeOnaSlideshow} showDots={false} />
 
       <section className="spotlight-panel">
         <div className="spotlight-copy">
@@ -192,12 +192,12 @@ export function HomePage() {
           <p className="eyebrow">Nova Reference</p>
           <h2> </h2>
           <p>
-            These Nova images show the compact, premium utility format that is
+            Compact, premium utility format that is
             supporting our local delivery execution layer.
           </p>
         </div>
 
-        <div className="nova-grid">
+        <div className="nova-list">
           {[
             "nova-1.webp",
             "nova-2.webp",

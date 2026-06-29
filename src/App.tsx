@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
+import { InternalToolsLayout } from "@/components/internal-tools-layout";
 import { Shell } from "@/components/shell";
 import { AdminDashboardPage } from "@/pages/admin-dashboard";
 import { BusinessesPage } from "@/pages/businesses-page";
@@ -34,9 +35,11 @@ export default function App() {
           <Route element={<PartnersPage />} path="partners" />
           <Route element={<ModelPage />} path="model" />
           <Route element={<PilotPage />} path="pilot" />
+          <Route element={<ThankYouPage />} path="pilot/thank-you" />
+        </Route>
+        <Route element={<InternalToolsLayout />} path="/">
           <Route element={<GenerateEmailPage />} path="generate-email" />
           <Route element={<GeneratePdfPage />} path="generate-pdf" />
-          <Route element={<ThankYouPage />} path="pilot/thank-you" />
         </Route>
         <Route element={<AdminDashboardPage />} path="/admin" />
       </Routes>

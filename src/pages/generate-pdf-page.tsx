@@ -75,11 +75,11 @@ export function GeneratePdfPage() {
 
   return (
     <div className="page-stack">
-      <section className="hero-panel generator-hero generator-hero-internal">
-        <div className="hero-copy">
+      <section className="generator-page-intro">
+        <div className="generator-page-intro-copy">
           <p className="eyebrow">Internal Letterhead Tool</p>
-          <h1>Generate branded Tsa Kasi PDFs with structured document inputs.</h1>
-          <p className="hero-description">
+          <h1>Generate branded Tsa Kasi PDFs.</h1>
+          <p className="generator-page-intro-text">
             Use the same internal document composer for letters, proposals, and
             quotations, then render a formal A4 PDF on the branded letterhead.
           </p>
@@ -90,10 +90,12 @@ export function GeneratePdfPage() {
           </div>
         </div>
 
-        <div className="hero-card generator-summary-card">
+        <div className="generator-page-intro-card">
           <p className="hero-card-label">Current output</p>
-          <h2 className="hero-card-title">{parsedDocument.variables.documentTitle}</h2>
-          <p className="hero-card-copy">
+          <h2 className="generator-page-intro-title">
+            {parsedDocument.variables.documentTitle}
+          </h2>
+          <p className="generator-page-intro-meta">
             {parsedDocument.variables.clientName} |{" "}
             {parsedDocument.variables.referenceNumber}
           </p>
