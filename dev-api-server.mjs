@@ -57,6 +57,16 @@ function sendJson(res, statusCode, body) {
   res.end(JSON.stringify(body));
 }
 
+function sendBinary(res, statusCode, buffer, fileName, contentType) {
+  res.writeHead(statusCode, {
+    "Content-Type": contentType,
+    "Content-Length": buffer.length,
+    "Content-Disposition": `attachment; filename="${fileName}"`,
+    "Cache-Control": "no-store",
+  });
+  res.end(buffer);
+}
+
 function parseBody(req) {
   return new Promise((resolve, reject) => {
     let raw = "";
@@ -238,9 +248,53 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  if (req.method === "POST" && requestUrl.pathname === "/api/generate-pdf") {
+    const body = await parseBody(req).catch(() => null);
+
+    if (!body || typeof body.markdown !== "string" || !body.markdown.trim()) {
+      sendJson(res, 400, { error: "Markdown content is required." });
+      return;
+    }
+
+    try {
+      const { generatePdfDocument } = await import("./tsa-kasi-letterhead-system/pdf-service.js");
+      const result = await generatePdfDocument({
+        markdownSource: body.markdown,
+        fileBaseName: sanitizeBaseName(body.fileName),
+        overrides:
+          body.overrides && typeof body.overrides === "object"
+            ? body.overrides
+            : {},
+        useReferenceBackground: body.useReferenceBackground === true,
+      });
+
+      sendBinary(
+        res,
+        200,
+        result.pdfBuffer,
+        result.fileName,
+        "application/pdf",
+      );
+    } catch (error) {
+      console.error("PDF generation failed:", error);
+      sendJson(res, 500, {
+        error: "PDF generation failed. Please confirm the local PDF service dependencies are installed.",
+      });
+    }
+    return;
+  }
+
   sendJson(res, 404, { error: "Not found." });
 });
 
 server.listen(PORT, () => {
   console.log(`Local API server listening on http://localhost:${PORT}`);
 });
+
+function sanitizeBaseName(value) {
+  if (typeof value !== "string" || !value.trim()) {
+    return "tsa-kasi-document";
+  }
+
+  return value.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9-_ ]+/g, "").trim() || "tsa-kasi-document";
+}

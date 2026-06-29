@@ -1,17 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function useAdminAuth() {
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Check for saved token in sessionStorage
-    const savedToken = sessionStorage.getItem("admin-token");
-    if (savedToken) {
-      setToken(savedToken);
-    }
-    setIsLoading(false);
-  }, []);
+  const [token, setToken] = useState<string | null>(() =>
+    typeof window === "undefined"
+      ? null
+      : sessionStorage.getItem("admin-token"),
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = async (password: string) => {
     setIsLoading(true);

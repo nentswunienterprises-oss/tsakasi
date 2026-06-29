@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{DOCUMENT_TITLE}}</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #eef3f7;
+        font-family: Aptos, "Segoe UI", Arial, sans-serif;
+        color: #0f1720;
+      }
+
+      .content p,
+      .content li {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #243240;
+      }
+
+      .content h2,
+      .content h3,
+      .content h4 {
+        color: #0b1825;
+        line-height: 1.3;
+      }
+
+      .content a {
+        color: #0079b8;
+      }
+
+      .content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+      }
+
+      .content th,
+      .content td {
+        padding: 12px;
+        border: 1px solid #d6e2ea;
+        text-align: left;
+      }
+
+      .content th {
+        background-color: #f2f9fd;
+      }
+    </style>
+  </head>
+  <body>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #eef3f7; margin: 0; padding: 24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 720px; background-color: #ffffff; border-collapse: collapse; border-radius: 22px; overflow: hidden;">
+            <tr>
+              <td style="padding: 0;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                  <tr>
+                    <td width="20" style="background-color: #00aeef; font-size: 0; line-height: 0;">&nbsp;</td>
+                    <td style="background-color: #07121c; padding: 24px 28px;">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td align="center" style="padding-bottom: 14px;">
+                            <img src="{{LOGO_DATA_URI}}" alt="Tsa Kasi Logistics logo" width="140" style="display: block; width: 140px; height: auto; margin: 0 auto;" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center" style="font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: #6fdcff; padding-bottom: 10px;">
+                            Tsa Kasi Logistics
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center" style="font-size: 30px; line-height: 1.2; font-weight: 700; color: #ffffff; padding-bottom: 6px;">
+                            {{DOCUMENT_TITLE}}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center" style="font-size: 15px; line-height: 1.6; color: #c6d6e4;">
+                            {{CLIENT_NAME}} | {{REFERENCE_NUMBER}} | {{DATE}}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="20" style="background: linear-gradient(180deg, #ff9a1a 0%, #ff8a00 100%); font-size: 0; line-height: 0;">&nbsp;</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 32px 38px 18px 38px;">
+                <div class="content">{{BODY}}</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 0 38px 34px 38px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                  <tr>
+                    <td style="border-top: 1px solid #d6e2ea; padding-top: 18px; font-size: 13px; line-height: 1.7; color: #5d7081;">
+                      {{FOOTER}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

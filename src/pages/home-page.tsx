@@ -19,43 +19,48 @@ export function HomePage() {
     <div className="page-stack">
       <Hero
         eyebrow="Waterberg Market Development"
-        title="Delivery is not the real problem. The local movement layer is."
-        description="Tsa Kasi Logistics exists because local last-mile delivery is expensive, fuel-sensitive, fragmented, and hard to optimize when goods reach the customer door. We are building a lower-cost, more reliable movement layer for regional commerce."
-        primaryLabel="Register Business Pilot"
+        title="Delivery that knows the kasi."
+        description="100% Black-owned and local. Serving the Waterberg since day one. Tsa Kasi solves the expensive, fuel-heavy last-mile gap by building a cleaner, more reliable movement layer for local commerce."
+        primaryLabel="Discuss Last Mile Partnership"
         primaryTo="/pilot"
         primaryState={{ scrollToForm: true }}
-        sideLabel="Infrastructure Thesis"
-        sideTitle="Regional Clean Logistics Infrastructure for Local Commerce"
-        sideCopy="Lower-cost, reliable movement for merchants, platforms, and recurring local route demand."
+        sideLabel="Clean Logistics"
+        sideTitle="We operate a clean, maintained fleet"
+        sideCopy="Committed to reducing our environmental footprint while keeping goods moving across the communities we serve."
       />
 
       <section className="stat-strip">
         <article>
-          <p className="stat-label">What is broken</p>
-          <p className="stat-value">Fuel-heavy local execution</p>
+          <p className="stat-label">Why Tsa Kasi</p>
+          <p className="stat-value">100% Black-owned & local</p>
         </article>
         <article>
-          <p className="stat-label">Who feels it</p>
-          <p className="stat-value">Businesses and platforms</p>
+          <p className="stat-label">Rooted in</p>
+          <p className="stat-value">the community</p>
         </article>
         <article>
-          <p className="stat-label">What Tsa Kasi builds</p>
-          <p className="stat-value">A regional movement layer</p>
+          <p className="stat-label">Where we serve</p>
+          <p className="stat-value">The Waterberg District</p>
         </article>
         <article>
-          <p className="stat-label">Where it starts</p>
-          <p className="stat-value">Waterberg</p>
+          <p className="stat-label">What we build</p>
+          <p className="stat-value">A cleaner, more reliable movement layer</p>
         </article>
       </section>
 
       <section className="section-grid">
         <div className="section-head">
-          <p className="eyebrow">Core Thesis</p>
-          <h2>Regional commerce needs a more cost-efficient movement layer.</h2>
+          <p className="eyebrow">Why Tsa Kasi</p>
+          <h2>A local logistics partner built for the Waterberg.</h2>
           <p>
-            Delivery may already be available. The problem is that local
+            Delivery may already be available. The real problem is that local
             last-mile execution remains expensive, fuel-sensitive, fragmented,
             and difficult to optimize at the customer-door level.
+          </p>
+          <p>
+            Rooted in the communities we serve, Tsa Kasi covers towns and
+            surrounding areas across the Waterberg District with an operating
+            model designed for local route density and regional reliability.
           </p>
         </div>
 
@@ -70,10 +75,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <HomeSlideshow
-        eyebrow="Ona Utility Reference"
-        items={homeOnaSlideshow}
-      />
+      <HomeSlideshow eyebrow="Ona Utility Reference" items={homeOnaSlideshow} />
 
       <section className="spotlight-panel">
         <div className="spotlight-copy">
@@ -182,6 +184,37 @@ export function HomePage() {
               Partnership Overview
             </Link>
           </article>
+        </div>
+      </section>
+
+      <section className="nova-gallery-section section-grid">
+        <div className="section-head">
+          <p className="eyebrow">Nova Reference</p>
+          <h2> </h2>
+          <p>
+            These Nova images show the compact, premium utility format that is
+            supporting our local delivery execution layer.
+          </p>
+        </div>
+
+        <div className="nova-grid">
+          {[
+            "nova-1.webp",
+            "nova-2.webp",
+            "nova-3.webp",
+            "nova-4.webp",
+            "nova-5.webp",
+            "nova-7.webp",
+            "nova-8.webp",
+          ].map((fileName) => (
+            <figure key={fileName} className="nova-tile">
+              <img
+                src={`/fleet/Nova/${fileName}`}
+                alt={`Nova fleet vehicle ${fileName.replace("nova-", "").replace(".webp", "")}`}
+                loading="lazy"
+              />
+            </figure>
+          ))}
         </div>
       </section>
 

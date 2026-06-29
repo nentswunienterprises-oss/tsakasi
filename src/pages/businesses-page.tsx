@@ -11,7 +11,7 @@ export function BusinessesPage() {
         eyebrow="For Businesses"
         title="A lower-burden movement layer for businesses with local delivery demand."
         description="Tsa Kasi Logistics is focused on businesses that require local fulfillment capability without absorbing the full burden of riders, fuel pressure, and complaints internally."
-        primaryLabel="Register Business Pilot"
+        primaryLabel="Discuss Last Mile Partnership"
         primaryTo="/pilot"
         primaryState={{ scrollToForm: true }}
         sideLabel="Business Relevance"
@@ -77,15 +77,12 @@ export function BusinessesPage() {
             to="/pilot"
             state={{ scrollToForm: true }}
           >
-            Register Business Pilot
+            Discuss Last Mile Partnership
           </Link>
         </div>
       </section>
 
-      <HomeSlideshow
-        eyebrow="Ona Utility Reference"
-        items={homeOnaSlideshow}
-      />
+      <HomeSlideshow items={homeOnaSlideshow} />
     </div>
   );
 }

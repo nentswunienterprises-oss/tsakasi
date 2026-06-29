@@ -845,3 +845,90 @@ Text
 Headings: white
 Body: gray-300
 Muted: gray-400
+
+The output you need before fundraising
+
+You should aim to create a Market Validation Pack.
+
+It should include:
+
+1. Interview count
+
+Example:
+
+We interviewed 35 local businesses across Modimolle, including restaurants, pharmacies, retailers, grocery stores, and local sellers.
+
+2. Pain evidence
+
+Example:
+
+68% of interviewed businesses said delivery is difficult to manage internally.
+54% said fuel or driver costs limit their delivery capacity.
+46% said they have lost sales due to lack of reliable delivery.
+
+3. Demand evidence
+
+Example:
+
+21 businesses expressed interest in joining a pilot.
+12 businesses said they would consider paying per delivery.
+7 businesses showed interest in monthly logistics support.
+
+4. Delivery volume estimate
+
+Example:
+
+Based on interviewed businesses, the first pilot node could begin with an estimated 180–300 potential deliveries per month.
+
+5. Letters of interest
+
+Even better than survey data.
+
+Get simple signed or emailed statements like:
+
+We, [Business Name], are interested in participating in the Tsa Kasi Logistics pilot once operations begin in Modimolle, subject to pricing, service terms, and availability.
+
+This is not a contract. It is a signal.
+
+What you show investors
+
+You go to investors with:
+
+1. Business model
+Tsa Kasi is regional clean logistics infrastructure, not a food delivery app.
+
+2. Market validation
+You interviewed real businesses.
+
+3. Pilot demand
+Businesses want to participate.
+
+4. Pilot design
+You know what the first controlled pilot will test: vehicle suitability, merchant intake, dispatch, driver workflow, OTP verification, proof of delivery, delivery time, energy usage, failed delivery handling, and cost per delivery. These are already core pilot requirements in the model.
+
+5. Use of funds
+Investor money funds the first proof node: fleet, charging, pilot operations, driver onboarding, dispatch setup, insurance, merchant acquisition, and Relief Works software build.
+
+6. Commitment evidence
+You did not just pitch an idea. You built the site, mapped the model, interviewed businesses, gathered interest, and prepared a controlled pilot.
+
+The correct sequence
+
+Here is the practical order:
+
+Step 1: Build landing page
+Purpose: collect business interviews and pilot interest.
+
+Step 2: Create interview form
+
+Step 3: Visit businesses physically
+Restaurants, pharmacies, retailers, grocery stores, hardware stores, township businesses, local e-commerce sellers.
+
+Step 4: Conduct 30–50 interviews
+Enough to show real market signal.
+
+Step 5: Get 10–20 pilot interest confirmations
+These become investor evidence.
+
+Step 6: Build Market Validation Report
+Summarize pain, demand, volume, pricing expectations, and pilot readiness.

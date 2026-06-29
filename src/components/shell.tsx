@@ -74,25 +74,6 @@ export function Shell() {
       <main className="page-frame">
         <Outlet />
       </main>
-
-      <footer className="site-footer">
-        <div>
-          <p className="eyebrow">Waterberg Market Development</p>
-          <h2 className="footer-title">
-            Tsa Kasi is building commercial proof around a lower-cost movement
-            layer for regional commerce in Waterberg.
-          </h2>
-        </div>
-        <div className="footer-actions">
-          <Link
-            className="button button-primary"
-            to="/pilot"
-            state={{ scrollToForm: true }}
-          >
-            Register Business Pilot
-          </Link>
-        </div>
-      </footer>
     </div>
   );
 }

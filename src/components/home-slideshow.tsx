@@ -7,7 +7,7 @@ type HomeSlideshowItem = {
 
 type HomeSlideshowProps = {
   items: HomeSlideshowItem[];
-  eyebrow: string;
+  eyebrow?: string;
 };
 
 export function HomeSlideshow({ items, eyebrow }: HomeSlideshowProps) {
@@ -33,9 +33,11 @@ export function HomeSlideshow({ items, eyebrow }: HomeSlideshowProps) {
 
   return (
     <section className="home-slideshow-panel">
-      <div className="home-slideshow-head">
-        <p className="eyebrow">{eyebrow}</p>
-      </div>
+      {eyebrow ? (
+        <div className="home-slideshow-head">
+          <p className="eyebrow">{eyebrow}</p>
+        </div>
+      ) : null}
 
       <div className="home-slideshow-stage">
         <figure className="home-slideshow-frame">

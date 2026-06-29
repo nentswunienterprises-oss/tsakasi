@@ -14,7 +14,7 @@ export function ModelPage() {
         eyebrow="Infrastructure Model"
         title="A regional logistics infrastructure model built around node concentration."
         description="Tsa Kasi begins in Waterberg because regional infrastructure is best built through concentration, route repetition, local trust, platform readiness, and node-by-node dominance."
-        primaryLabel="Register Business Pilot"
+        primaryLabel="Discuss Last Mile Partnership"
         primaryTo="/pilot"
         primaryState={{ scrollToForm: true }}
         sideLabel="Operating Logic"

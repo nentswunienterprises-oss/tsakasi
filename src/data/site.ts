@@ -139,20 +139,8 @@ export const homeOnaSlideshow = [
     alt: "Green Scooter ZA Ona side utility profile on a studio background.",
   },
   {
-    src: "/fleet/Ona/p-two 6.webp",
-    alt: "Green Scooter ZA Ona rear cargo loading view with cartons.",
-  },
-  {
-    src: "/fleet/Ona/p-two 8.webp",
-    alt: "Green Scooter ZA Ona closed rear cargo view on a studio background.",
-  },
-  {
     src: "/fleet/Ona/p-two 9.webp",
     alt: "Green Scooter ZA Ona charging view beside a charging unit.",
-  },
-  {
-    src: "/fleet/Ona/p-two 10.webp",
-    alt: "Green Scooter ZA Ona utility access panel detail.",
   },
 ];
 

@@ -29,34 +29,34 @@ export function AdminSubmissions({ token, onLogout }: AdminSubmissionsProps) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchSubmissions();
-  }, [token]);
+    async function fetchSubmissions() {
+      setIsLoading(true);
+      setError("");
 
-  async function fetchSubmissions() {
-    setIsLoading(true);
-    setError("");
+      try {
+        const response = await fetch("/api/admin/submissions", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-    try {
-      const response = await fetch("/api/admin/submissions", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        if (!response.ok) {
+          throw new Error("Failed to fetch submissions");
+        }
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch submissions");
+        const data = (await response.json()) as { submissions: Submission[] };
+        setSubmissions(data.submissions);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load submissions",
+        );
+      } finally {
+        setIsLoading(false);
       }
-
-      const data = (await response.json()) as { submissions: Submission[] };
-      setSubmissions(data.submissions);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to load submissions",
-      );
-    } finally {
-      setIsLoading(false);
     }
-  }
+
+    void fetchSubmissions();
+  }, [token]);
 
   return (
     <div className="admin-dashboard">
