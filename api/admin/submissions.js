@@ -1,41 +1,24 @@
-import { createClient } from "@supabase/supabase-js";
-
-type VercelLikeRequest = {
-  method?: string;
-  headers?: Record<string, string>;
-};
-
-type VercelLikeResponse = {
-  status: (code: number) => VercelLikeResponse;
-  json: (body: unknown) => void;
-};
+const { createClient } = require("@supabase/supabase-js");
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 
-function normalizeSupabaseUrl(url: string) {
+function normalizeSupabaseUrl(url) {
   return url.replace(/\/rest\/v1\/?$/, "");
 }
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error(
-    "Missing Supabase configuration (VITE_SUPABASE_URL and SUPABASE_SERVICE_KEY)",
-  );
-}
+const supabase =
+  supabaseUrl && supabaseKey
+    ? createClient(normalizeSupabaseUrl(supabaseUrl), supabaseKey)
+    : null;
 
-const supabase = createClient(normalizeSupabaseUrl(supabaseUrl), supabaseKey);
-
-export default async function handler(
-  req: VercelLikeRequest,
-  res: VercelLikeResponse,
-) {
+module.exports = async function handler(req, res) {
   if (req.method !== "GET") {
     res.status(405).json({ error: "Method not allowed." });
     return;
   }
 
-  // Simple token validation
-  const authHeader = req.headers?.["authorization"];
+  const authHeader = req.headers?.authorization;
   const token = authHeader?.replace("Bearer ", "");
 
   if (!token) {
@@ -43,10 +26,15 @@ export default async function handler(
     return;
   }
 
-  // In production, validate token properly (JWT verification, session lookup, etc.)
-  // For now, just check it's not empty
   if (token.length < 16) {
     res.status(401).json({ error: "Invalid token." });
+    return;
+  }
+
+  if (!supabase) {
+    res.status(500).json({
+      error: "Missing Supabase configuration (VITE_SUPABASE_URL and SUPABASE_SERVICE_KEY).",
+    });
     return;
   }
 
@@ -67,4 +55,4 @@ export default async function handler(
       error: `Server error: ${err instanceof Error ? err.message : "Unknown error"}`,
     });
   }
-}
+};

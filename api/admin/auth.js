@@ -1,19 +1,6 @@
-import crypto from "crypto";
+const crypto = require("crypto");
 
-type VercelLikeRequest = {
-  method?: string;
-  body?: { password?: string } | string;
-};
-
-type VercelLikeResponse = {
-  status: (code: number) => VercelLikeResponse;
-  json: (body: unknown) => void;
-};
-
-export default async function handler(
-  req: VercelLikeRequest,
-  res: VercelLikeResponse,
-) {
+module.exports = async function handler(req, res) {
   try {
     if (req.method !== "POST") {
       res.status(405).json({ error: "Method not allowed." });
@@ -21,16 +8,12 @@ export default async function handler(
     }
 
     const parsedBody =
-      typeof req.body === "string"
-        ? (JSON.parse(req.body) as { password?: string })
-        : req.body || {};
-    const { password } = parsedBody;
-    const adminPassword = process.env.ADMIN_PASSWORD?.replace(/\r?\n$/, "");
+      typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
+    const password = parsedBody.password;
+    const adminPassword = (process.env.ADMIN_PASSWORD || "").replace(/\r?\n$/, "");
 
     if (!adminPassword) {
-      res
-        .status(500)
-        .json({ error: "Admin password not configured on server." });
+      res.status(500).json({ error: "Admin password not configured on server." });
       return;
     }
 
@@ -54,10 +37,7 @@ export default async function handler(
       return;
     }
 
-    // Generate a simple session token (in production, use proper JWT)
-    const token = crypto.randomBytes(32).toString("hex");
-
-    res.status(200).json({ token });
+    res.status(200).json({ token: crypto.randomBytes(32).toString("hex") });
   } catch (error) {
     res.status(500).json({
       error:
@@ -66,4 +46,4 @@ export default async function handler(
           : "Admin auth failed.",
     });
   }
-}
+};
