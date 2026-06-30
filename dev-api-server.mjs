@@ -38,7 +38,7 @@ loadEnvFile(path.resolve(process.cwd(), ".env.local"));
 
 const rawSupabaseUrl = process.env.VITE_SUPABASE_URL || "";
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || "";
-const adminPassword = process.env.ADMIN_PASSWORD || "";
+const adminPassword = (process.env.ADMIN_PASSWORD || "").replace(/\r?\n$/, "");
 const pilotWebhookUrl = process.env.PILOT_WEBHOOK_URL || "";
 
 function normalizeSupabaseUrl(url) {

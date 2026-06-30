@@ -722,6 +722,12 @@ textarea {
   .nova-tile {
     min-height: 18rem;
   }
+
+  .nova-list .nova-tile:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - 2rem) / 2);
+  }
 }
 
 .nova-tile img {

@@ -1,5 +1,17 @@
 import { useState } from "react";
 
+async function readErrorMessage(response: Response) {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    const data = (await response.json()) as { error?: string };
+    return data.error || `Login failed (${response.status})`;
+  }
+
+  const text = await response.text();
+  return text.trim() || `Login failed (${response.status})`;
+}
+
 export function useAdminAuth() {
   const [token, setToken] = useState<string | null>(() =>
     typeof window === "undefined"
@@ -18,11 +30,15 @@ export function useAdminAuth() {
       });
 
       if (!response.ok) {
-        const data = (await response.json()) as { error?: string };
-        throw new Error(data.error || "Login failed");
+        throw new Error(await readErrorMessage(response));
       }
 
       const data = (await response.json()) as { token: string };
+
+      if (!data.token) {
+        throw new Error("Login response did not include a token.");
+      }
+
       sessionStorage.setItem("admin-token", data.token);
       setToken(data.token);
       return { success: true };
