@@ -27,8 +27,8 @@ type VercelLikeResponse = {
   json: (body: unknown) => void;
 };
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseUrl = process.env.VITE_SUPABASE_URL?.trim();
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY?.trim();
 
 function normalizeSupabaseUrl(url: string) {
   return url.replace(/\/rest\/v1\/?$/, "");
