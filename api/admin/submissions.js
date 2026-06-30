@@ -1,4 +1,4 @@
-const { createClient } = require("@supabase/supabase-js");
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
@@ -12,7 +12,7 @@ const supabase =
     ? createClient(normalizeSupabaseUrl(supabaseUrl), supabaseKey)
     : null;
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.status(405).json({ error: "Method not allowed." });
     return;
@@ -55,4 +55,4 @@ module.exports = async function handler(req, res) {
       error: `Server error: ${err instanceof Error ? err.message : "Unknown error"}`,
     });
   }
-};
+}
