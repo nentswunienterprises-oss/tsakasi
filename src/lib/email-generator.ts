@@ -167,8 +167,9 @@ export function buildEmailHtml(
   logoSource: string,
 ) {
   const { variables, htmlBody } = document;
+  const inlineStyledBody = inlineEmailContentHtml(htmlBody);
   const logoMarkup = logoSource
-    ? `<img src="${escapeHtmlAttribute(logoSource)}" alt="Tsa Kasi Logistics logo" width="150" style="display: block; width: 150px; height: auto; margin: 0 auto;" />`
+    ? `<img src="${escapeHtmlAttribute(logoSource)}" alt="Tsa Kasi Logistics logo" width="132" height="132" style="display: block; width: 132px; height: 132px; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />`
     : `<div style="display: inline-block; color: #ff9b05; font-size: 26px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Tsa Kasi</div>`;
 
   return `<!doctype html>
@@ -223,16 +224,16 @@ export function buildEmailHtml(
     </style>
   </head>
   <body>
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: linear-gradient(180deg, #edf1f5 0%, #e5ebf1 100%); margin: 0; padding: 32px 0;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width: 100%; background: linear-gradient(180deg, #edf1f5 0%, #e5ebf1 100%); margin: 0; padding: 18px 0;">
       <tr>
-        <td align="center">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 760px; background-color: #fefefe; border-collapse: collapse; border-radius: 28px; overflow: hidden; box-shadow: 0 28px 80px rgba(7, 18, 28, 0.14);">
+        <td align="center" style="padding: 0 8px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width: 100%; max-width: 680px; background-color: #fefefe; border-collapse: collapse; border-radius: 24px; overflow: hidden; box-shadow: 0 22px 60px rgba(7, 18, 28, 0.14);">
             <tr>
               <td style="padding: 0;">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #050505;">
                   <tr>
-                    <td width="22" style="background: linear-gradient(180deg, #11bfff 0%, #00aeef 100%); font-size: 0; line-height: 0;">&nbsp;</td>
-                    <td style="padding: 34px 34px 30px 34px;">
+                    <td width="14" style="background: linear-gradient(180deg, #11bfff 0%, #00aeef 100%); font-size: 0; line-height: 0;">&nbsp;</td>
+                    <td style="padding: 28px 18px 24px 18px;">
                       <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                         <tr>
                           <td align="center" style="padding-bottom: 12px;">
@@ -240,48 +241,41 @@ export function buildEmailHtml(
                           </td>
                         </tr>
                         <tr>
-                          <td align="center" style="font-size: 11px; letter-spacing: 0.42em; text-transform: uppercase; color: #66d5ff; padding-bottom: 14px;">
-                            Tsa Kasi Logistics
-                          </td>
-                        </tr>
-                        <tr>
-                          <td align="center" style="font-size: 38px; line-height: 1.08; font-weight: 800; color: #ffffff; letter-spacing: -0.04em; padding-bottom: 14px;">
+                          <td align="center" style="font-size: 34px; line-height: 1.08; font-weight: 800; color: #ffffff; letter-spacing: -0.04em; padding-bottom: 14px;">
                             ${escapeHtml(variables.documentTitle)}
                           </td>
                         </tr>
                         <tr>
                           <td align="center">
-                            <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto; border-collapse: separate; border-spacing: 8px 0;">
-                              <tr>
-                                <td style="padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea;">
-                                  ${escapeHtml(variables.clientName)}
-                                </td>
-                                <td style="padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea;">
-                                  ${escapeHtml(variables.referenceNumber)}
-                                </td>
-                                <td style="padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea;">
-                                  ${escapeHtml(variables.date)}
-                                </td>
-                              </tr>
-                            </table>
+                            <div style="text-align: center; font-size: 0; max-width: 100%;">
+                              <span style="display: inline-block; margin: 4px; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea; vertical-align: top;">
+                                ${escapeHtml(variables.clientName)}
+                              </span>
+                              <span style="display: inline-block; margin: 4px; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea; vertical-align: top;">
+                                ${escapeHtml(variables.referenceNumber)}
+                              </span>
+                              <span style="display: inline-block; margin: 4px; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea; vertical-align: top;">
+                                ${escapeHtml(variables.date)}
+                              </span>
+                            </div>
                           </td>
                         </tr>
                       </table>
                     </td>
-                    <td width="22" style="background: linear-gradient(180deg, #ff9a1a 0%, #ff8a00 100%); font-size: 0; line-height: 0;">&nbsp;</td>
+                    <td width="14" style="background: linear-gradient(180deg, #ff9a1a 0%, #ff8a00 100%); font-size: 0; line-height: 0;">&nbsp;</td>
                   </tr>
                 </table>
               </td>
             </tr>
 
             <tr>
-              <td style="padding: 38px 42px 20px 42px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
-                <div class="content">${htmlBody}</div>
+              <td style="padding: 28px 22px 18px 22px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
+                <div class="content">${inlineStyledBody}</div>
               </td>
             </tr>
 
             <tr>
-              <td style="padding: 0 42px 36px 42px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
+              <td style="padding: 0 22px 28px 22px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
                   <tr>
                     <td style="border-top: 1px solid #d8e0e8; padding-top: 18px; font-size: 13px; line-height: 1.7; color: #5d7081;">
@@ -420,4 +414,114 @@ function escapeHtml(value: string) {
 
 function escapeHtmlAttribute(value: string) {
   return escapeHtml(value);
+}
+
+function inlineEmailContentHtml(htmlBody: string) {
+  if (typeof DOMParser === "undefined") {
+    return htmlBody;
+  }
+
+  const parser = new DOMParser();
+  const documentNode = parser.parseFromString(`<div>${htmlBody}</div>`, "text/html");
+  const wrapper = documentNode.body.firstElementChild;
+
+  if (!wrapper) {
+    return htmlBody;
+  }
+
+  wrapper.querySelectorAll("*").forEach((element) => {
+    const tagName = element.tagName.toLowerCase();
+
+    if (tagName === "p") {
+      appendInlineStyle(
+        element,
+        "margin: 0 0 18px; font-size: 17px; line-height: 1.75; color: #243240;",
+      );
+    }
+
+    if (tagName === "h2") {
+      appendInlineStyle(
+        element,
+        "margin: 24px 0 12px; font-size: 28px; line-height: 1.2; color: #0b1825;",
+      );
+    }
+
+    if (tagName === "h3") {
+      appendInlineStyle(
+        element,
+        "margin: 22px 0 12px; font-size: 23px; line-height: 1.25; color: #0b1825;",
+      );
+    }
+
+    if (tagName === "h4") {
+      appendInlineStyle(
+        element,
+        "margin: 18px 0 10px; font-size: 19px; line-height: 1.3; color: #0b1825;",
+      );
+    }
+
+    if (tagName === "ul") {
+      const isNestedList = element.parentElement?.tagName.toLowerCase() === "li";
+      appendInlineStyle(
+        element,
+        isNestedList
+          ? "margin: 8px 0 10px; padding-left: 18px;"
+          : "margin: 12px 0 18px; padding-left: 22px;",
+      );
+    }
+
+    if (tagName === "ol") {
+      appendInlineStyle(element, "margin: 12px 0 18px; padding-left: 22px;");
+    }
+
+    if (tagName === "li") {
+      appendInlineStyle(
+        element,
+        "margin: 0 0 10px; padding-left: 2px; font-size: 17px; line-height: 1.7; color: #243240;",
+      );
+    }
+
+    if (tagName === "a") {
+      appendInlineStyle(
+        element,
+        "color: #0079b8; text-decoration: underline; word-break: break-word;",
+      );
+    }
+
+    if (tagName === "strong") {
+      appendInlineStyle(element, "color: #0b1825;");
+    }
+
+    if (tagName === "table") {
+      appendInlineStyle(
+        element,
+        "width: 100%; border-collapse: collapse; margin: 20px 0; table-layout: fixed;",
+      );
+    }
+
+    if (tagName === "th") {
+      appendInlineStyle(
+        element,
+        "padding: 10px 12px; border: 1px solid #d6e2ea; text-align: left; background-color: #f2f9fd; color: #0b1825; font-size: 14px; line-height: 1.4;",
+      );
+    }
+
+    if (tagName === "td") {
+      appendInlineStyle(
+        element,
+        "padding: 10px 12px; border: 1px solid #d6e2ea; text-align: left; color: #243240; font-size: 14px; line-height: 1.6; word-break: break-word;",
+      );
+    }
+  });
+
+  return wrapper.innerHTML;
+}
+
+function appendInlineStyle(element: Element, styleText: string) {
+  const existingStyle = element.getAttribute("style");
+
+  element.setAttribute(
+    "style",
+    existingStyle ? `${existingStyle.trim()} ${styleText}` : styleText,
+  );
 }

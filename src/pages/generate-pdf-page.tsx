@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { DocumentComposerPanel } from "@/components/document-composer-panel";
+import { useDocumentDrafts } from "@/hooks/use-document-drafts";
 import {
   buildMarkdownFromComposer,
   createDocumentComposerState,
@@ -13,6 +14,15 @@ export function GeneratePdfPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
   const [useReferenceBackground, setUseReferenceBackground] = useState(false);
+  const {
+    draftName,
+    draftStatus,
+    drafts,
+    setDraftName,
+    saveDraft,
+    loadDraft,
+    deleteDraft,
+  } = useDocumentDrafts(composer, setComposer);
   const markdownSource = buildMarkdownFromComposer(composer);
   const parsedDocument = parseEmailDocument(markdownSource);
   const downloadFileName = `${slugify(parsedDocument.variables.documentTitle) || "tsa-kasi-document"}.pdf`;
@@ -115,6 +125,13 @@ export function GeneratePdfPage() {
 
       <section className="generator-workbench">
         <DocumentComposerPanel
+          draftName={draftName}
+          draftStatus={draftStatus}
+          drafts={drafts}
+          onDeleteDraft={deleteDraft}
+          onDraftNameChange={setDraftName}
+          onLoadDraft={loadDraft}
+          onSaveDraft={saveDraft}
           previewHref="#pdf-preview"
           state={composer}
           toolsId="generator-tools"

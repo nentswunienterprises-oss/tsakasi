@@ -326,6 +326,7 @@ textarea {
   align-items: center;
   gap: 2.5rem;
   padding: 3.25rem 3rem 2.5rem;
+  border: none;
   background-image:
     linear-gradient(180deg, rgba(4, 5, 7, 0.90), rgba(10, 12, 16, 0.85)),
     url("/fleet/Nova/nova-4.webp");
@@ -333,6 +334,7 @@ textarea {
   background-position: center right;
   background-repeat: no-repeat;
   background-blend-mode: multiply;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.44);
 }
 
 .hero-panel::before {
@@ -1290,6 +1292,7 @@ textarea {
 }
 
 .generator-field input,
+.generator-field select,
 .generator-field textarea,
 .generator-quote-table input,
 .generator-quote-table textarea,
@@ -1306,6 +1309,7 @@ textarea {
 }
 
 .generator-field input,
+.generator-field select,
 .generator-meta-card input,
 .generator-quote-table input {
   min-height: 2.9rem;
@@ -1324,6 +1328,7 @@ textarea {
 }
 
 .generator-field input:focus,
+.generator-field select:focus,
 .generator-field textarea:focus,
 .generator-quote-table input:focus,
 .generator-quote-table textarea:focus,
@@ -1363,6 +1368,62 @@ textarea {
   line-height: 1.7;
 }
 
+.generator-drafts-panel {
+  display: grid;
+  gap: 0.95rem;
+  padding: 1rem 0 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.generator-draft-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+
+.generator-draft-status,
+.generator-draft-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.generator-draft-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.generator-draft-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.generator-draft-card-copy {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.generator-draft-card-copy strong {
+  color: var(--text);
+  font-size: 0.98rem;
+  line-height: 1.4;
+}
+
+.generator-draft-card-copy span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
 .generator-list-editor,
 .generator-table-editor {
   display: grid;
@@ -1376,11 +1437,42 @@ textarea {
   gap: 0.85rem;
 }
 
+.generator-list-head p {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
 .generator-list-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.75rem;
   align-items: start;
+}
+
+.generator-list-row-block {
+  align-items: stretch;
+}
+
+.generator-block-editor {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.generator-inline-actions-wrap {
+  align-items: stretch;
+}
+
+.generator-block-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.generator-inline-block-button {
+  align-self: start;
 }
 
 .generator-remove-button {
@@ -1822,6 +1914,7 @@ textarea {
   .generator-list-head,
   .generator-list-row,
   .generator-quote-table,
+  .generator-draft-controls,
   .generator-inline-actions,
   .generator-preview-actions {
     grid-template-columns: 1fr;
@@ -1830,6 +1923,11 @@ textarea {
   .generator-list-head,
   .generator-preview-actions {
     display: grid;
+  }
+
+  .generator-draft-card {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .generator-textarea {
@@ -1864,17 +1962,6 @@ textarea {
     padding-right: 0;
   }
 
-  .hero-panel::before {
-    background-size: 120% auto;
-    background-position: 62% 78%;
-  }
-}
-
-@media (max-width: 420px) {
-  .hero-panel::before {
-    background-size: 112% auto;
-    background-position: 62% 80%;
-  }
 }
 
 /* Admin Dashboard Styles */

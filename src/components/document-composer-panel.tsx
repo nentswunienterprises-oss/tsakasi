@@ -2,23 +2,74 @@ import {
   createDocumentComposerState,
   documentKindOptions,
   switchDocumentKind,
+  type LetterContentBlockType,
   type DocumentComposerState,
   type DocumentKind,
 } from "@/lib/document-composer";
+import { type SavedDocumentDraft } from "@/lib/document-drafts";
 
 type DocumentComposerPanelProps = {
+  draftName: string;
+  draftStatus: string;
+  drafts: SavedDocumentDraft[];
+  onDeleteDraft: (draftId: string) => void;
   previewHref: string;
+  onDraftNameChange: (value: string) => void;
+  onLoadDraft: (draftId: string) => void;
+  onSaveDraft: () => void;
   state: DocumentComposerState;
   toolsId: string;
   onChange: (nextState: DocumentComposerState) => void;
 };
 
 export function DocumentComposerPanel({
+  draftName,
+  draftStatus,
+  drafts,
+  onDeleteDraft,
   previewHref,
+  onDraftNameChange,
+  onLoadDraft,
+  onSaveDraft,
   state,
   toolsId,
   onChange,
 }: DocumentComposerPanelProps) {
+  const letterBlockTypeOptions: Array<{
+    description: string;
+    label: string;
+    value: LetterContentBlockType;
+  }> = [
+    {
+      value: "paragraph",
+      label: "Paragraph",
+      description: "Plain body text you can fully control.",
+    },
+    {
+      value: "heading",
+      label: "Heading",
+      description: "Large section heading in the branded output.",
+    },
+    {
+      value: "subheading",
+      label: "Subheading",
+      description: "Smaller section heading under a main heading.",
+    },
+    {
+      value: "bullet",
+      label: "Point",
+      description: "Standard bullet point.",
+    },
+    {
+      value: "subBullet",
+      label: "Sub-Bullet",
+      description: "Indented bullet under a main point.",
+    },
+  ];
+  const primaryLetterBlockTypeOptions = letterBlockTypeOptions.filter(
+    (option) => option.value !== "subBullet",
+  );
+
   function updateRootField<
     Key extends
       | "clientName"
@@ -70,7 +121,7 @@ export function DocumentComposerPanel({
   }
 
   function updateStringList(
-    section: "letter" | "proposal" | "quotation",
+    section: "proposal" | "quotation",
     field: string,
     index: number,
     value: string,
@@ -79,11 +130,6 @@ export function DocumentComposerPanel({
     const nextList = currentList.map((item, itemIndex) =>
       itemIndex === index ? value : item,
     );
-
-    if (section === "letter") {
-      updateLetterField("focusPoints", nextList);
-      return;
-    }
 
     if (section === "proposal" && field === "valuePoints") {
       updateProposalField("valuePoints", nextList);
@@ -99,16 +145,11 @@ export function DocumentComposerPanel({
   }
 
   function addStringListItem(
-    section: "letter" | "proposal" | "quotation",
+    section: "proposal" | "quotation",
     field: string,
   ) {
     const currentList = (state[section] as Record<string, unknown>)[field] as string[];
     const nextList = [...currentList, ""];
-
-    if (section === "letter") {
-      updateLetterField("focusPoints", nextList);
-      return;
-    }
 
     if (section === "proposal" && field === "valuePoints") {
       updateProposalField("valuePoints", nextList);
@@ -124,17 +165,12 @@ export function DocumentComposerPanel({
   }
 
   function removeStringListItem(
-    section: "letter" | "proposal" | "quotation",
+    section: "proposal" | "quotation",
     field: string,
     index: number,
   ) {
     const currentList = (state[section] as Record<string, unknown>)[field] as string[];
     const nextList = currentList.filter((_, itemIndex) => itemIndex !== index);
-
-    if (section === "letter") {
-      updateLetterField("focusPoints", nextList.length ? nextList : [""]);
-      return;
-    }
 
     if (section === "proposal" && field === "valuePoints") {
       updateProposalField("valuePoints", nextList.length ? nextList : [""]);
@@ -147,6 +183,83 @@ export function DocumentComposerPanel({
     }
 
     updateQuotationField("notes", nextList.length ? nextList : [""]);
+  }
+
+  function updateLetterBodyBlockText(index: number, value: string) {
+    updateLetterField(
+      "bodyBlocks",
+      state.letter.bodyBlocks.map((block, blockIndex) =>
+        blockIndex === index
+          ? {
+              ...block,
+              text: value,
+            }
+          : block,
+      ),
+    );
+  }
+
+  function updateLetterBodyBlockType(index: number, value: LetterContentBlockType) {
+    updateLetterField(
+      "bodyBlocks",
+      state.letter.bodyBlocks.map((block, blockIndex) =>
+        blockIndex === index
+          ? {
+              ...block,
+              type: value,
+            }
+          : block,
+      ),
+    );
+  }
+
+  function addLetterBodyBlock(type: LetterContentBlockType) {
+    updateLetterField("bodyBlocks", [
+      ...state.letter.bodyBlocks,
+      {
+        type,
+        text: "",
+      },
+    ]);
+  }
+
+  function insertLetterBodyBlock(index: number, type: LetterContentBlockType) {
+    const nextBlocks = [...state.letter.bodyBlocks];
+
+    nextBlocks.splice(index, 0, {
+      type,
+      text: "",
+    });
+
+    updateLetterField("bodyBlocks", nextBlocks);
+  }
+
+  function addSubBulletAfterBullet(index: number) {
+    let insertAt = index + 1;
+
+    while (state.letter.bodyBlocks[insertAt]?.type === "subBullet") {
+      insertAt += 1;
+    }
+
+    insertLetterBodyBlock(insertAt, "subBullet");
+  }
+
+  function addBodyAfterHeading(index: number) {
+    let insertAt = index + 1;
+
+    while (state.letter.bodyBlocks[insertAt]?.type === "paragraph") {
+      insertAt += 1;
+    }
+
+    insertLetterBodyBlock(insertAt, "paragraph");
+  }
+
+  function removeLetterBodyBlock(index: number) {
+    const nextBlocks = state.letter.bodyBlocks.filter(
+      (_, blockIndex) => blockIndex !== index,
+    );
+
+    updateLetterField("bodyBlocks", nextBlocks);
   }
 
   function updateQuotationRow(
@@ -250,6 +363,72 @@ export function DocumentComposerPanel({
           </a>
         </div>
 
+        <section className="generator-drafts-panel">
+          <div className="generator-section-head">
+            <h3>Drafts</h3>
+            <p>Save named working versions, then reload them any time on this device.</p>
+          </div>
+
+          <div className="generator-draft-controls">
+            <label className="generator-field">
+              <span>Draft Name</span>
+              <input
+                type="text"
+                value={draftName}
+                onChange={(event) => onDraftNameChange(event.target.value)}
+                placeholder="Merchant follow-up - Romans Pizza"
+              />
+            </label>
+            <div className="generator-inline-actions">
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={onSaveDraft}
+              >
+                Save Draft
+              </button>
+            </div>
+          </div>
+
+          {draftStatus ? <p className="generator-draft-status">{draftStatus}</p> : null}
+
+          {drafts.length > 0 ? (
+            <div className="generator-draft-list">
+              {drafts.map((draft) => (
+                <div className="generator-draft-card" key={draft.id}>
+                  <div className="generator-draft-card-copy">
+                    <strong>{draft.name}</strong>
+                    <span>
+                      {capitalize(draft.state.kind)} | Updated{" "}
+                      {formatDraftTimestamp(draft.updatedAt)}
+                    </span>
+                  </div>
+                  <div className="generator-inline-actions">
+                    <button
+                      type="button"
+                      className="button button-ghost"
+                      onClick={() => onLoadDraft(draft.id)}
+                    >
+                      Load
+                    </button>
+                    <button
+                      type="button"
+                      className="generator-remove-button"
+                      onClick={() => onDeleteDraft(draft.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="generator-draft-empty">
+              No saved drafts yet. Save one to keep this work-in-progress.
+            </p>
+          )}
+        </section>
+
         <div className="generator-field-grid">
           <label className="generator-field">
             <span>Document Title</span>
@@ -349,33 +528,105 @@ export function DocumentComposerPanel({
 
             <div className="generator-list-editor">
               <div className="generator-list-head">
-                <h4>Focus Points</h4>
+                <div>
+                  <h4>Structured Body Blocks</h4>
+                  <p>Headings, bullets, and support lines stay fully editable here.</p>
+                </div>
+              </div>
+              <div className="generator-inline-actions generator-inline-actions-wrap">
                 <button
                   type="button"
                   className="button button-ghost"
-                  onClick={() => addStringListItem("letter", "focusPoints")}
+                  onClick={() => addLetterBodyBlock("paragraph")}
+                >
+                  Add Paragraph
+                </button>
+                <button
+                  type="button"
+                  className="button button-ghost"
+                  onClick={() => addLetterBodyBlock("heading")}
+                >
+                  Add Heading
+                </button>
+                <button
+                  type="button"
+                  className="button button-ghost"
+                  onClick={() => addLetterBodyBlock("subheading")}
+                >
+                  Add Subheading
+                </button>
+                <button
+                  type="button"
+                  className="button button-ghost"
+                  onClick={() => addLetterBodyBlock("bullet")}
                 >
                   Add Point
                 </button>
               </div>
-              {state.letter.focusPoints.map((item, index) => (
-                <div className="generator-list-row" key={`letter-point-${index}`}>
-                  <textarea
-                    rows={2}
-                    value={item}
-                    onChange={(event) =>
-                      updateStringList(
-                        "letter",
-                        "focusPoints",
-                        index,
-                        event.target.value,
-                      )
-                    }
-                  />
+              {state.letter.bodyBlocks.map((block, index) => (
+                <div
+                  className="generator-list-row generator-list-row-block"
+                  key={`letter-block-${index}`}
+                >
+                  <div className="generator-block-editor">
+                    <label className="generator-field">
+                      <span>Block Type</span>
+                      <select
+                        value={block.type}
+                        onChange={(event) =>
+                          updateLetterBodyBlockType(
+                            index,
+                            event.target.value as LetterContentBlockType,
+                          )
+                        }
+                      >
+                        {(block.type === "subBullet"
+                          ? letterBlockTypeOptions
+                          : primaryLetterBlockTypeOptions
+                        ).map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={block.text}
+                      onChange={(event) =>
+                        updateLetterBodyBlockText(index, event.target.value)
+                      }
+                    />
+                    <p className="generator-block-hint">
+                      {
+                        letterBlockTypeOptions.find(
+                          (option) => option.value === block.type,
+                        )?.description
+                      }
+                    </p>
+                  </div>
+                  {block.type === "bullet" ? (
+                    <button
+                      type="button"
+                      className="button button-ghost generator-inline-block-button"
+                      onClick={() => addSubBulletAfterBullet(index)}
+                    >
+                      Add Sub-Bullet
+                    </button>
+                  ) : null}
+                  {block.type === "heading" || block.type === "subheading" ? (
+                    <button
+                      type="button"
+                      className="button button-ghost generator-inline-block-button"
+                      onClick={() => addBodyAfterHeading(index)}
+                    >
+                      Add Body
+                    </button>
+                  ) : null}
                   <button
                     type="button"
                     className="generator-remove-button"
-                    onClick={() => removeStringListItem("letter", "focusPoints", index)}
+                    onClick={() => removeLetterBodyBlock(index)}
                   >
                     Remove
                   </button>
@@ -411,6 +662,36 @@ export function DocumentComposerPanel({
                   value={state.letter.senderName}
                   onChange={(event) =>
                     updateLetterField("senderName", event.target.value)
+                  }
+                />
+              </label>
+              <label className="generator-field">
+                <span>Sender Title</span>
+                <input
+                  type="text"
+                  value={state.letter.senderTitle}
+                  onChange={(event) =>
+                    updateLetterField("senderTitle", event.target.value)
+                  }
+                />
+              </label>
+              <label className="generator-field">
+                <span>Website</span>
+                <input
+                  type="text"
+                  value={state.letter.senderWebsite}
+                  onChange={(event) =>
+                    updateLetterField("senderWebsite", event.target.value)
+                  }
+                />
+              </label>
+              <label className="generator-field">
+                <span>Phone</span>
+                <input
+                  type="text"
+                  value={state.letter.senderPhone}
+                  onChange={(event) =>
+                    updateLetterField("senderPhone", event.target.value)
                   }
                 />
               </label>
@@ -682,4 +963,24 @@ function FragmentRow({
       </button>
     </>
   );
+}
+
+function formatDraftTimestamp(value: string) {
+  const parsedDate = new Date(value);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("en-ZA", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(parsedDate);
+}
+
+function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }

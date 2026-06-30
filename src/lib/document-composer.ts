@@ -1,5 +1,17 @@
 export type DocumentKind = "letter" | "proposal" | "quotation";
 
+export type LetterContentBlockType =
+  | "paragraph"
+  | "heading"
+  | "subheading"
+  | "bullet"
+  | "subBullet";
+
+export type LetterContentBlock = {
+  text: string;
+  type: LetterContentBlockType;
+};
+
 export type QuotationRow = {
   amount: string;
   description: string;
@@ -14,11 +26,14 @@ export type DocumentComposerState = {
   kind: DocumentKind;
   letter: {
     closing: string;
-    focusPoints: string[];
     greeting: string;
     introduction: string;
+    bodyBlocks: LetterContentBlock[];
     recipient: string;
+    senderPhone: string;
     senderName: string;
+    senderTitle: string;
+    senderWebsite: string;
     signOff: string;
     subject: string;
   };
@@ -74,6 +89,115 @@ export function createDocumentComposerState(
   };
 }
 
+export function hydrateDocumentComposerState(
+  value: unknown,
+  fallbackKind: DocumentKind = "letter",
+): DocumentComposerState {
+  const fallback = createDocumentComposerState(fallbackKind);
+
+  if (!value || typeof value !== "object") {
+    return fallback;
+  }
+
+  const candidate = value as Partial<DocumentComposerState> & {
+    letter?: Partial<DocumentComposerState["letter"]> & {
+      bodyBlocks?: unknown;
+    };
+    proposal?: Partial<DocumentComposerState["proposal"]>;
+    quotation?: Partial<DocumentComposerState["quotation"]> & {
+      rows?: unknown;
+    };
+  };
+  const nextKind = isDocumentKind(candidate.kind) ? candidate.kind : fallback.kind;
+  const kindDefaults = createDocumentComposerState(nextKind);
+
+  return {
+    ...kindDefaults,
+    clientName: readString(candidate.clientName, kindDefaults.clientName),
+    date: readString(candidate.date, kindDefaults.date),
+    documentTitle: readString(candidate.documentTitle, kindDefaults.documentTitle),
+    footer: readString(candidate.footer, kindDefaults.footer),
+    kind: nextKind,
+    referenceNumber: readString(
+      candidate.referenceNumber,
+      kindDefaults.referenceNumber,
+    ),
+    letter: {
+      ...kindDefaults.letter,
+      recipient: readString(
+        candidate.letter?.recipient,
+        kindDefaults.letter.recipient,
+      ),
+      subject: readString(candidate.letter?.subject, kindDefaults.letter.subject),
+      greeting: readString(
+        candidate.letter?.greeting,
+        kindDefaults.letter.greeting,
+      ),
+      introduction: readString(
+        candidate.letter?.introduction,
+        kindDefaults.letter.introduction,
+      ),
+      bodyBlocks: readLetterBodyBlocks(
+        candidate.letter?.bodyBlocks,
+        kindDefaults.letter.bodyBlocks,
+      ),
+      closing: readString(candidate.letter?.closing, kindDefaults.letter.closing),
+      signOff: readString(candidate.letter?.signOff, kindDefaults.letter.signOff),
+      senderName: readString(
+        candidate.letter?.senderName,
+        kindDefaults.letter.senderName,
+      ),
+      senderTitle: readString(
+        candidate.letter?.senderTitle,
+        kindDefaults.letter.senderTitle,
+      ),
+      senderWebsite: readString(
+        candidate.letter?.senderWebsite,
+        kindDefaults.letter.senderWebsite,
+      ),
+      senderPhone: readString(
+        candidate.letter?.senderPhone,
+        kindDefaults.letter.senderPhone,
+      ),
+    },
+    proposal: {
+      ...kindDefaults.proposal,
+      executiveSummary: readString(
+        candidate.proposal?.executiveSummary,
+        kindDefaults.proposal.executiveSummary,
+      ),
+      valuePoints: readStringList(
+        candidate.proposal?.valuePoints,
+        kindDefaults.proposal.valuePoints,
+      ),
+      deliverySteps: readStringList(
+        candidate.proposal?.deliverySteps,
+        kindDefaults.proposal.deliverySteps,
+      ),
+      nextStep: readString(
+        candidate.proposal?.nextStep,
+        kindDefaults.proposal.nextStep,
+      ),
+    },
+    quotation: {
+      ...kindDefaults.quotation,
+      introduction: readString(
+        candidate.quotation?.introduction,
+        kindDefaults.quotation.introduction,
+      ),
+      rows: readQuotationRows(
+        candidate.quotation?.rows,
+        kindDefaults.quotation.rows,
+      ),
+      notes: readStringList(candidate.quotation?.notes, kindDefaults.quotation.notes),
+      closing: readString(
+        candidate.quotation?.closing,
+        kindDefaults.quotation.closing,
+      ),
+    },
+  };
+}
+
 export function switchDocumentKind(
   current: DocumentComposerState,
   nextKind: DocumentKind,
@@ -124,7 +248,11 @@ function buildLetterMarkdown(state: DocumentComposerState) {
   }
 
   if (letter.subject.trim()) {
-    blocks.push(`**Subject:** ${letter.subject}`);
+    blocks.push(
+      `<h3 style="margin: 0; text-align: center;">${escapeInlineHtml(
+        letter.subject.trim(),
+      )}</h3>`,
+    );
   }
 
   blocks.push(letter.greeting.trim() || `Dear ${state.clientName} Team,`);
@@ -133,23 +261,17 @@ function buildLetterMarkdown(state: DocumentComposerState) {
     blocks.push(letter.introduction.trim());
   }
 
-  if (letter.focusPoints.some((item) => item.trim())) {
-    blocks.push(
-      ["Our operating focus is simple:", ...letter.focusPoints.filter(Boolean).map((item) => `- ${item.trim()}`)].join(
-        "\n",
-      ),
-    );
+  const bodyBlockMarkdown = buildLetterBodyBlocksMarkdown(letter.bodyBlocks);
+
+  if (bodyBlockMarkdown) {
+    blocks.push(bodyBlockMarkdown);
   }
 
   if (letter.closing.trim()) {
     blocks.push(letter.closing.trim());
   }
 
-  blocks.push(
-    [letter.signOff.trim() || "Kind regards", `**${letter.senderName.trim() || "Tsa Kasi Logistics"}**`].join(
-      "\n\n",
-    ),
-  );
+  blocks.push(buildLetterSignatureMarkdown(letter));
 
   return blocks.filter(Boolean).join("\n\n");
 }
@@ -185,6 +307,70 @@ function buildProposalMarkdown(state: DocumentComposerState) {
   }
 
   return blocks.filter(Boolean).join("\n\n");
+}
+
+function buildLetterBodyBlocksMarkdown(blocks: LetterContentBlock[]) {
+  const normalizedBlocks = blocks
+    .map((block) => ({
+      ...block,
+      text: block.text.trim(),
+    }))
+    .filter((block) => block.text);
+
+  if (normalizedBlocks.length === 0) {
+    return "";
+  }
+
+  const lines: string[] = [];
+
+  normalizedBlocks.forEach((block, index) => {
+    if (index > 0) {
+      const previousBlock = normalizedBlocks[index - 1];
+      const currentIsList = isListBlock(block.type);
+      const previousIsList = isListBlock(previousBlock.type);
+
+      if (!currentIsList || !previousIsList) {
+        lines.push("");
+      }
+    }
+
+    lines.push(formatLetterBodyBlock(block));
+  });
+
+  return lines.join("\n");
+}
+
+function buildLetterSignatureMarkdown(letter: DocumentComposerState["letter"]) {
+  const lines: string[] = [];
+
+  lines.push(letter.signOff.trim() || "Kind regards");
+
+  if (letter.senderName.trim()) {
+    lines.push(`**${letter.senderName.trim()}**`);
+  }
+
+  if (letter.senderTitle.trim()) {
+    lines.push(letter.senderTitle.trim());
+  }
+
+  if (letter.senderWebsite.trim()) {
+    const website = normalizeWebsiteUrl(letter.senderWebsite);
+    lines.push("", `[${letter.senderWebsite.trim()}](${website})`);
+  }
+
+  if (letter.senderPhone.trim()) {
+    lines.push("", letter.senderPhone.trim());
+  }
+
+  return lines.filter((line, index, source) => {
+    if (line !== "") {
+      return true;
+    }
+
+    const previousLine = source[index - 1];
+    const nextLine = source[index + 1];
+    return Boolean(previousLine) && Boolean(nextLine);
+  }).join("\n\n");
 }
 
 function buildQuotationMarkdown(state: DocumentComposerState) {
@@ -238,15 +424,31 @@ function createBaseState(): Omit<DocumentComposerState, "documentTitle" | "kind"
       greeting: "Dear Romans Pizza Modimolle Team,",
       introduction:
         "Thank you for taking the time to review the Tsa Kasi Logistics opportunity. We appreciate the role your store plays in local commerce and believe there is strong potential to create a delivery partnership that improves convenience for customers while strengthening your store's order capacity.",
-      focusPoints: [
-        "Extend your delivery reach without forcing you to build the full delivery layer internally.",
-        "Protect your brand experience with a structured, professional communication flow.",
-        "Create a dependable local logistics partner that understands township and regional trade realities.",
+      bodyBlocks: [
+        {
+          type: "paragraph",
+          text: "Our operating focus is simple:",
+        },
+        {
+          type: "bullet",
+          text: "Extend your delivery reach without forcing you to build the full delivery layer internally.",
+        },
+        {
+          type: "bullet",
+          text: "Protect your brand experience with a structured, professional communication flow.",
+        },
+        {
+          type: "bullet",
+          text: "Create a dependable local logistics partner that understands township and regional trade realities.",
+        },
       ],
       closing:
         "We would welcome a short follow-up meeting to align on rollout requirements, expected volumes, and the service model that best fits your branch. If useful, we can also prepare a branch-specific activation outline covering staffing, delivery radius, and communication expectations.",
       signOff: "Kind regards",
-      senderName: "Tsa Kasi Logistics",
+      senderName: "Thendo Nentswuni",
+      senderTitle: "Founder & CEO, Tsa Kasi Logistics",
+      senderWebsite: "www.tsakasilogistics.co.za",
+      senderPhone: "079 536 1261",
     },
     proposal: {
       executiveSummary:
@@ -319,4 +521,133 @@ function formatDocumentDate(date: Date) {
 
 function sanitizeTableCell(value: string) {
   return value.trim().replace(/\|/g, "\\|");
+}
+
+function readString(value: unknown, fallback: string) {
+  return typeof value === "string" ? value : fallback;
+}
+
+function readStringList(value: unknown, fallback: string[]) {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const normalized = value.filter((item): item is string => typeof item === "string");
+  return normalized.length > 0 ? normalized : fallback;
+}
+
+function readLetterBodyBlocks(
+  value: unknown,
+  fallback: LetterContentBlock[],
+) {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const normalized = value
+    .map((item) => {
+      if (!item || typeof item !== "object") {
+        return null;
+      }
+
+      const candidate = item as Partial<LetterContentBlock>;
+
+      if (
+        !candidate.type ||
+        !isLetterContentBlockType(candidate.type) ||
+        typeof candidate.text !== "string"
+      ) {
+        return null;
+      }
+
+      return {
+        type: candidate.type,
+        text: candidate.text,
+      } satisfies LetterContentBlock;
+    })
+    .filter((item): item is LetterContentBlock => Boolean(item));
+
+  return normalized.length > 0 ? normalized : fallback;
+}
+
+function readQuotationRows(value: unknown, fallback: QuotationRow[]) {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const normalized = value
+    .map((item) => {
+      if (!item || typeof item !== "object") {
+        return null;
+      }
+
+      const candidate = item as Partial<QuotationRow>;
+
+      return {
+        item: typeof candidate.item === "string" ? candidate.item : "",
+        description:
+          typeof candidate.description === "string" ? candidate.description : "",
+        amount: typeof candidate.amount === "string" ? candidate.amount : "",
+      } satisfies QuotationRow;
+    })
+    .filter((item): item is QuotationRow => Boolean(item));
+
+  return normalized.length > 0 ? normalized : fallback;
+}
+
+function isDocumentKind(value: unknown): value is DocumentKind {
+  return value === "letter" || value === "proposal" || value === "quotation";
+}
+
+function isLetterContentBlockType(value: unknown): value is LetterContentBlockType {
+  return (
+    value === "paragraph" ||
+    value === "heading" ||
+    value === "subheading" ||
+    value === "bullet" ||
+    value === "subBullet"
+  );
+}
+
+function escapeInlineHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function normalizeWebsiteUrl(value: string) {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(trimmedValue)) {
+    return trimmedValue;
+  }
+
+  return `https://${trimmedValue}`;
+}
+
+function formatLetterBodyBlock(block: LetterContentBlock) {
+  switch (block.type) {
+    case "heading":
+      return `## ${block.text}`;
+    case "subheading":
+      return `### ${block.text}`;
+    case "bullet":
+      return `- ${block.text}`;
+    case "subBullet":
+      return `    - ${block.text}`;
+    case "paragraph":
+    default:
+      return block.text;
+  }
+}
+
+function isListBlock(type: LetterContentBlockType) {
+  return type === "bullet" || type === "subBullet";
 }

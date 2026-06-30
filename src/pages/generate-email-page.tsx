@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
+import emailLogoDataUri from "@/assets/tsa-kasi-logo-email.png?inline";
 import { DocumentComposerPanel } from "@/components/document-composer-panel";
+import { useDocumentDrafts } from "@/hooks/use-document-drafts";
 import {
   buildMarkdownFromComposer,
   createDocumentComposerState,
@@ -10,44 +12,19 @@ import { buildEmailHtml, parseEmailDocument } from "@/lib/email-generator";
 export function GenerateEmailPage() {
   const [composer, setComposer] = useState(createDocumentComposerState("letter"));
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
-  const [logoDataUri, setLogoDataUri] = useState("");
+  const {
+    draftName,
+    draftStatus,
+    drafts,
+    setDraftName,
+    saveDraft,
+    loadDraft,
+    deleteDraft,
+  } = useDocumentDrafts(composer, setComposer);
   const markdownSource = buildMarkdownFromComposer(composer);
   const parsedDocument = parseEmailDocument(markdownSource);
-  const emailHtml = buildEmailHtml(parsedDocument, logoDataUri);
+  const emailHtml = buildEmailHtml(parsedDocument, emailLogoDataUri);
   const downloadFileName = `${slugify(parsedDocument.variables.documentTitle) || "tsa-kasi-email"}.html`;
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadLogo() {
-      try {
-        const response = await fetch("/brand/tsa-kasi-logo.png");
-        const blob = await response.blob();
-
-        if (cancelled) {
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          if (!cancelled && typeof reader.result === "string") {
-            setLogoDataUri(reader.result);
-          }
-        };
-        reader.readAsDataURL(blob);
-      } catch {
-        if (!cancelled) {
-          setLogoDataUri("");
-        }
-      }
-    }
-
-    void loadLogo();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useEffect(() => {
     if (copyState === "idle") {
@@ -139,6 +116,13 @@ export function GenerateEmailPage() {
 
       <section className="generator-workbench">
         <DocumentComposerPanel
+          draftName={draftName}
+          draftStatus={draftStatus}
+          drafts={drafts}
+          onDeleteDraft={deleteDraft}
+          onDraftNameChange={setDraftName}
+          onLoadDraft={loadDraft}
+          onSaveDraft={saveDraft}
           previewHref="#email-preview"
           state={composer}
           toolsId="generator-tools"
