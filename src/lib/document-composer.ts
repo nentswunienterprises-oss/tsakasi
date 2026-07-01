@@ -29,7 +29,6 @@ export type DocumentComposerState = {
     greeting: string;
     introduction: string;
     bodyBlocks: LetterContentBlock[];
-    recipient: string;
     senderPhone: string;
     senderName: string;
     senderTitle: string;
@@ -49,7 +48,6 @@ export type DocumentComposerState = {
     notes: string[];
     rows: QuotationRow[];
   };
-  referenceNumber: string;
 };
 
 export const documentKindOptions: Array<{
@@ -118,16 +116,8 @@ export function hydrateDocumentComposerState(
     documentTitle: readString(candidate.documentTitle, kindDefaults.documentTitle),
     footer: readString(candidate.footer, kindDefaults.footer),
     kind: nextKind,
-    referenceNumber: readString(
-      candidate.referenceNumber,
-      kindDefaults.referenceNumber,
-    ),
     letter: {
       ...kindDefaults.letter,
-      recipient: readString(
-        candidate.letter?.recipient,
-        kindDefaults.letter.recipient,
-      ),
       subject: readString(candidate.letter?.subject, kindDefaults.letter.subject),
       greeting: readString(
         candidate.letter?.greeting,
@@ -219,7 +209,6 @@ export function buildMarkdownFromComposer(state: DocumentComposerState) {
   const frontmatterLines = [
     `documentTitle: ${state.documentTitle}`,
     `clientName: ${state.clientName}`,
-    `referenceNumber: ${state.referenceNumber}`,
     `date: ${state.date}`,
     `footer: ${state.footer}`,
   ];
@@ -242,10 +231,6 @@ function buildBodyMarkdown(state: DocumentComposerState) {
 function buildLetterMarkdown(state: DocumentComposerState) {
   const { letter } = state;
   const blocks: string[] = [];
-
-  if (letter.recipient.trim()) {
-    blocks.push(`**To:** ${letter.recipient}`);
-  }
 
   if (letter.subject.trim()) {
     blocks.push(
@@ -419,7 +404,6 @@ function createBaseState(): Omit<DocumentComposerState, "documentTitle" | "kind"
     date: formatDocumentDate(new Date()),
     footer: DEFAULT_FOOTER,
     letter: {
-      recipient: "Romans Pizza Modimolle Team",
       subject: "Merchant Follow-Up Letter",
       greeting: "Dear Romans Pizza Modimolle Team,",
       introduction:
@@ -495,7 +479,6 @@ function createBaseState(): Omit<DocumentComposerState, "documentTitle" | "kind"
       closing:
         "We remain available to adjust this quotation to match your branch and trading environment.",
     },
-    referenceNumber: "TKL-2026-001",
   };
 }
 

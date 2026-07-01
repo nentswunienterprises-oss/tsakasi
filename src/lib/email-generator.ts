@@ -5,7 +5,6 @@ export type EmailDocumentVariables = {
   date: string;
   documentTitle: string;
   footer: string;
-  referenceNumber: string;
 };
 
 export type ParsedEmailDocument = {
@@ -24,14 +23,12 @@ const DEFAULT_VARIABLES: EmailDocumentVariables = {
   documentTitle: "General Letter",
   footer:
     "Tsa Kasi Logistics (Pty) Ltd | Merchant support, delivery operations, and strategic growth under Waterberg.",
-  referenceNumber: "TKL-GEN-001",
 };
 
 const SAMPLE_DOCUMENTS: Record<SampleDocumentKey, string> = {
   letter: `---
 documentTitle: Merchant Follow-Up Letter
 clientName: Romans Pizza Modimolle
-referenceNumber: TKL-2026-001
 footer: Tsa Kasi Logistics (Pty) Ltd | Merchant support, delivery operations, and strategic growth under Waterberg.
 ---
 
@@ -55,7 +52,6 @@ Kind regards,
   proposal: `---
 documentTitle: Partnership Proposal
 clientName: Independent Merchant Network
-referenceNumber: TKL-2026-002
 ---
 
 ## Executive Summary
@@ -80,7 +76,6 @@ We recommend a pilot phase with a clearly defined service radius, success metric
   quotation: `---
 documentTitle: Service Quotation
 clientName: Prospective Retail Partner
-referenceNumber: TKL-2026-003
 ---
 
 Thank you for requesting a quotation from Tsa Kasi Logistics. The outline below provides a sample commercial structure that can be refined once route density, order frequency, and branch requirements are confirmed.
@@ -117,8 +112,6 @@ export function parseEmailDocument(source: string): ParsedEmailDocument {
   const variables: EmailDocumentVariables = {
     documentTitle: frontmatter.documentTitle || DEFAULT_VARIABLES.documentTitle,
     clientName: frontmatter.clientName || DEFAULT_VARIABLES.clientName,
-    referenceNumber:
-      frontmatter.referenceNumber || DEFAULT_VARIABLES.referenceNumber,
     footer: frontmatter.footer || DEFAULT_VARIABLES.footer,
     date: normalizeDateValue(frontmatter.date) || DEFAULT_VARIABLES.date,
   };
@@ -198,7 +191,6 @@ export function buildEmailClipboardHtml(
       <div style="font-size:30px; line-height:1.15; font-weight:800; color:#ffffff; letter-spacing:-0.03em; padding-bottom:12px; word-break:break-word;">${escapeHtml(variables.documentTitle)}</div>
       <div style="font-size:0; text-align:center;">
         <span style="display:inline-block; margin:4px; padding:7px 12px; border:1px solid rgba(255,255,255,0.12); border-radius:999px; background:rgba(255,255,255,0.05); font-size:12px; line-height:1.4; color:#d2deea; vertical-align:top;">${escapeHtml(variables.clientName)}</span>
-        <span style="display:inline-block; margin:4px; padding:7px 12px; border:1px solid rgba(255,255,255,0.12); border-radius:999px; background:rgba(255,255,255,0.05); font-size:12px; line-height:1.4; color:#d2deea; vertical-align:top;">${escapeHtml(variables.referenceNumber)}</span>
         <span style="display:inline-block; margin:4px; padding:7px 12px; border:1px solid rgba(255,255,255,0.12); border-radius:999px; background:rgba(255,255,255,0.05); font-size:12px; line-height:1.4; color:#d2deea; vertical-align:top;">${escapeHtml(variables.date)}</span>
       </div>
     </td>
@@ -284,7 +276,6 @@ function composeEmailDocumentSource({
   const orderedEntries = [
     "documentTitle",
     "clientName",
-    "referenceNumber",
     "date",
     "footer",
   ]

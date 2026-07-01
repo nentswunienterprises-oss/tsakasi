@@ -71,12 +71,7 @@ export function DocumentComposerPanel({
   );
 
   function updateRootField<
-    Key extends
-      | "clientName"
-      | "date"
-      | "documentTitle"
-      | "footer"
-      | "referenceNumber",
+    Key extends "clientName" | "date" | "documentTitle" | "footer",
   >(key: Key, value: DocumentComposerState[Key]) {
     onChange({
       ...state,
@@ -449,16 +444,6 @@ export function DocumentComposerPanel({
             />
           </label>
           <label className="generator-field">
-            <span>Reference Number</span>
-            <input
-              type="text"
-              value={state.referenceNumber}
-              onChange={(event) =>
-                updateRootField("referenceNumber", event.target.value)
-              }
-            />
-          </label>
-          <label className="generator-field">
             <span>Date</span>
             <input
               type="text"
@@ -484,16 +469,6 @@ export function DocumentComposerPanel({
             </div>
 
             <div className="generator-field-grid">
-              <label className="generator-field">
-                <span>Recipient</span>
-                <input
-                  type="text"
-                  value={state.letter.recipient}
-                  onChange={(event) =>
-                    updateLetterField("recipient", event.target.value)
-                  }
-                />
-              </label>
               <label className="generator-field">
                 <span>Subject</span>
                 <input

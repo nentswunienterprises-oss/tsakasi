@@ -100,10 +100,7 @@ export function GenerateEmailPage() {
           <h2 className="generator-page-intro-title">
             {parsedDocument.variables.documentTitle}
           </h2>
-          <p className="generator-page-intro-meta">
-            {parsedDocument.variables.clientName} |{" "}
-            {parsedDocument.variables.referenceNumber}
-          </p>
+          <p className="generator-page-intro-meta">{parsedDocument.variables.clientName}</p>
           <div className="generator-metadata-list">
             <p>
               <strong>Type:</strong> {capitalize(composer.kind)}
