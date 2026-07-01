@@ -164,13 +164,13 @@ export function updateEmailDocumentBody(source: string, nextBody: string) {
 
 export function buildEmailHtml(
   document: ParsedEmailDocument,
-  logoSource: string,
+  logoMarkup: string,
 ) {
   const { variables, htmlBody } = document;
   const inlineStyledBody = inlineEmailContentHtml(htmlBody);
-  const logoMarkup = logoSource
-    ? `<img src="${escapeHtmlAttribute(logoSource)}" alt="Tsa Kasi Logistics logo" width="132" height="132" style="display: block; width: 132px; height: 132px; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />`
-    : `<div style="display: inline-block; color: #ff9b05; font-size: 26px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Tsa Kasi</div>`;
+  const resolvedLogoMarkup =
+    logoMarkup ||
+    `<div style="display: inline-block; color: #ff9b05; font-size: 26px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Tsa Kasi</div>`;
 
   return `<!doctype html>
 <html lang="en">
@@ -237,7 +237,9 @@ export function buildEmailHtml(
                       <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                         <tr>
                           <td align="center" style="padding-bottom: 12px;">
-                            ${logoMarkup}
+                            <div style="color: #ff9b05; text-align: center;">
+                              ${resolvedLogoMarkup}
+                            </div>
                           </td>
                         </tr>
                         <tr>

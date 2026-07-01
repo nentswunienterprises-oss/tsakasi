@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import emailLogoDataUri from "@/assets/tsa-kasi-logo-email.png?inline";
 import { DocumentComposerPanel } from "@/components/document-composer-panel";
 import { useDocumentDrafts } from "@/hooks/use-document-drafts";
 import {
@@ -8,6 +7,7 @@ import {
   createDocumentComposerState,
 } from "@/lib/document-composer";
 import { buildEmailHtml, parseEmailDocument } from "@/lib/email-generator";
+import { EMAIL_LOGO_SVG } from "@/lib/email-logo-svg";
 
 export function GenerateEmailPage() {
   const [composer, setComposer] = useState(createDocumentComposerState("letter"));
@@ -23,7 +23,7 @@ export function GenerateEmailPage() {
   } = useDocumentDrafts(composer, setComposer);
   const markdownSource = buildMarkdownFromComposer(composer);
   const parsedDocument = parseEmailDocument(markdownSource);
-  const emailHtml = buildEmailHtml(parsedDocument, emailLogoDataUri);
+  const emailHtml = buildEmailHtml(parsedDocument, EMAIL_LOGO_SVG);
   const downloadFileName = `${slugify(parsedDocument.variables.documentTitle) || "tsa-kasi-email"}.html`;
 
   useEffect(() => {
