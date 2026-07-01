@@ -166,133 +166,52 @@ export function buildEmailHtml(
   document: ParsedEmailDocument,
   logoMarkup: string,
 ) {
-  const { variables, htmlBody } = document;
-  const inlineStyledBody = inlineEmailContentHtml(htmlBody);
-  const resolvedLogoMarkup =
-    logoMarkup ||
-    `<div style="display: inline-block; color: #ff9b05; font-size: 26px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Tsa Kasi</div>`;
+  const brandedBody = buildEmailClipboardHtml(document, logoMarkup);
 
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escapeHtml(variables.documentTitle)}</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background-color: #eef3f7;
-        font-family: Aptos, "Segoe UI", Arial, sans-serif;
-        color: #0f1720;
-      }
-
-      .content p,
-      .content li {
-        font-size: 16px;
-        line-height: 1.7;
-        color: #243240;
-      }
-
-      .content h2,
-      .content h3,
-      .content h4 {
-        color: #0b1825;
-        line-height: 1.3;
-      }
-
-      .content a {
-        color: #0079b8;
-      }
-
-      .content table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 24px 0;
-      }
-
-      .content th,
-      .content td {
-        padding: 12px;
-        border: 1px solid #d6e2ea;
-        text-align: left;
-      }
-
-      .content th {
-        background-color: #f2f9fd;
-      }
-    </style>
+    <title>${escapeHtml(document.variables.documentTitle)}</title>
   </head>
-  <body>
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width: 100%; background: linear-gradient(180deg, #edf1f5 0%, #e5ebf1 100%); margin: 0; padding: 18px 0;">
-      <tr>
-        <td align="center" style="padding: 0 8px;">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width: 100%; max-width: 680px; background-color: #fefefe; border-collapse: collapse; border-radius: 24px; overflow: hidden; box-shadow: 0 22px 60px rgba(7, 18, 28, 0.14);">
-            <tr>
-              <td style="padding: 0;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #050505;">
-                  <tr>
-                    <td width="14" style="background: linear-gradient(180deg, #11bfff 0%, #00aeef 100%); font-size: 0; line-height: 0;">&nbsp;</td>
-                    <td style="padding: 28px 18px 24px 18px;">
-                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                        <tr>
-                          <td align="center" style="padding-bottom: 12px;">
-                            <div style="color: #ff9b05; text-align: center;">
-                              ${resolvedLogoMarkup}
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td align="center" style="font-size: 34px; line-height: 1.08; font-weight: 800; color: #ffffff; letter-spacing: -0.04em; padding-bottom: 14px;">
-                            ${escapeHtml(variables.documentTitle)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td align="center">
-                            <div style="text-align: center; font-size: 0; max-width: 100%;">
-                              <span style="display: inline-block; margin: 4px; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea; vertical-align: top;">
-                                ${escapeHtml(variables.clientName)}
-                              </span>
-                              <span style="display: inline-block; margin: 4px; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea; vertical-align: top;">
-                                ${escapeHtml(variables.referenceNumber)}
-                              </span>
-                              <span style="display: inline-block; margin: 4px; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); font-size: 13px; line-height: 1.5; color: #d2deea; vertical-align: top;">
-                                ${escapeHtml(variables.date)}
-                              </span>
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td width="14" style="background: linear-gradient(180deg, #ff9a1a 0%, #ff8a00 100%); font-size: 0; line-height: 0;">&nbsp;</td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <tr>
-              <td style="padding: 28px 22px 18px 22px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
-                <div class="content">${inlineStyledBody}</div>
-              </td>
-            </tr>
-
-            <tr>
-              <td style="padding: 0 22px 28px 22px; background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
-                  <tr>
-                    <td style="border-top: 1px solid #d8e0e8; padding-top: 18px; font-size: 13px; line-height: 1.7; color: #5d7081;">
-                      ${escapeHtml(variables.footer)}
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
+  <body style="margin:0;padding:16px 10px;background-color:#eef3f7;font-family:Aptos, 'Segoe UI', Arial, sans-serif;color:#0f1720;">
+    <div style="max-width:700px;margin:0 auto;">${brandedBody}</div>
   </body>
 </html>`;
+}
+
+export function buildEmailClipboardHtml(
+  document: ParsedEmailDocument,
+  logoMarkup: string,
+) {
+  const { variables, htmlBody } = document;
+  const inlineStyledBody = inlineEmailContentHtml(htmlBody);
+  const resolvedLogoMarkup =
+    logoMarkup ||
+    `<div style="display: inline-block; color: #ff9b05; font-size: 26px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Tsa Kasi</div>`;
+
+  return `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin:0; border-collapse:collapse; background-color:#ffffff; border:1px solid #d8e0e8; font-family:Aptos, 'Segoe UI', Arial, sans-serif; color:#0f1720; table-layout:fixed;">
+  <tr>
+    <td style="padding:24px 18px 20px; background-color:#050505; text-align:center;">
+      <div style="padding-bottom:12px;">${resolvedLogoMarkup}</div>
+      <div style="font-size:30px; line-height:1.15; font-weight:800; color:#ffffff; letter-spacing:-0.03em; padding-bottom:12px; word-break:break-word;">${escapeHtml(variables.documentTitle)}</div>
+      <div style="font-size:0; text-align:center;">
+        <span style="display:inline-block; margin:4px; padding:7px 12px; border:1px solid rgba(255,255,255,0.12); border-radius:999px; background:rgba(255,255,255,0.05); font-size:12px; line-height:1.4; color:#d2deea; vertical-align:top;">${escapeHtml(variables.clientName)}</span>
+        <span style="display:inline-block; margin:4px; padding:7px 12px; border:1px solid rgba(255,255,255,0.12); border-radius:999px; background:rgba(255,255,255,0.05); font-size:12px; line-height:1.4; color:#d2deea; vertical-align:top;">${escapeHtml(variables.referenceNumber)}</span>
+        <span style="display:inline-block; margin:4px; padding:7px 12px; border:1px solid rgba(255,255,255,0.12); border-radius:999px; background:rgba(255,255,255,0.05); font-size:12px; line-height:1.4; color:#d2deea; vertical-align:top;">${escapeHtml(variables.date)}</span>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:24px 18px 12px; background-color:#ffffff; word-break:break-word; overflow-wrap:anywhere;" class="content">${inlineStyledBody}</td>
+  </tr>
+  <tr>
+    <td style="padding:0 18px 22px; background-color:#ffffff;">
+      <div style="border-top:1px solid #d8e0e8; padding-top:14px; font-size:13px; line-height:1.65; color:#5d7081; word-break:break-word; overflow-wrap:anywhere;">${escapeHtml(variables.footer)}</div>
+    </td>
+  </tr>
+</table>`;
 }
 
 function splitFrontmatter(source: string): {

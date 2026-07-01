@@ -1,18 +1,14 @@
-import rawEmailLogoSvg from "@/assets/tsa-kasi-logo-email.svg?raw";
+const DEFAULT_EMAIL_LOGO_URL =
+  "https://www.tsakasilogistics.co.za/brand/tsa-kasi-logo.png";
 
-export const EMAIL_LOGO_SVG = buildEmailLogoSvgImage(rawEmailLogoSvg);
+export const EMAIL_LOGO_SVG = buildEmailLogoImage();
 
-function buildEmailLogoSvgImage(rawSvg: string) {
-  const svgContent = rawSvg.replace(/<\?xml[\s\S]*?\?>\s*/i, "").trim();
-  const svgBase64 = base64EncodeUnicode(svgContent);
-  const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
+function buildEmailLogoImage() {
+  const configuredLogoUrl = import.meta.env.VITE_EMAIL_LOGO_URL;
+  const logoUrl =
+    typeof configuredLogoUrl === "string" && configuredLogoUrl.trim()
+      ? configuredLogoUrl.trim()
+      : DEFAULT_EMAIL_LOGO_URL;
 
-  return `<img src="${dataUri}" alt="Tsa Kasi Logistics logo" style="display:block;width:260px;max-width:100%;height:auto;margin:0 auto;" />`;
-}
-
-function base64EncodeUnicode(value: string) {
-  // btoa only handles binary strings, so convert from UTF-8 first.
-  return globalThis.btoa(
-    unescape(encodeURIComponent(value)),
-  );
+  return `<img src="${logoUrl}" alt="Tsa Kasi Logistics logo" width="260" style="display:block;width:260px;max-width:100%;height:auto;margin:0 auto;border:0;outline:none;text-decoration:none;" />`;
 }

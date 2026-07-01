@@ -31,3 +31,4 @@ npm run build
 - The form posts to `/api/business-pilot`.
 - Set `PILOT_WEBHOOK_URL` in Vercel to forward submissions into Airtable, HubSpot, Zapier, Make, or another workflow endpoint.
 - In local `vite` development, the form falls back to browser storage if the API route is unavailable.
+- For sent email logo rendering across Gmail/mobile, set `VITE_EMAIL_LOGO_URL` to a public `https://` image URL (PNG recommended), e.g. `https://www.tsakasilogistics.co.za/brand/tsa-kasi-logo.png`.

@@ -6,7 +6,10 @@ import {
   buildMarkdownFromComposer,
   createDocumentComposerState,
 } from "@/lib/document-composer";
-import { buildEmailHtml, parseEmailDocument } from "@/lib/email-generator";
+import {
+  buildEmailHtml,
+  parseEmailDocument,
+} from "@/lib/email-generator";
 import { EMAIL_LOGO_SVG } from "@/lib/email-logo-svg";
 
 export function GenerateEmailPage() {
@@ -21,6 +24,7 @@ export function GenerateEmailPage() {
     loadDraft,
     deleteDraft,
   } = useDocumentDrafts(composer, setComposer);
+
   const markdownSource = buildMarkdownFromComposer(composer);
   const parsedDocument = parseEmailDocument(markdownSource);
   const emailHtml = buildEmailHtml(parsedDocument, EMAIL_LOGO_SVG);
@@ -39,15 +43,11 @@ export function GenerateEmailPage() {
     try {
       const parser = new DOMParser();
       const documentNode = parser.parseFromString(emailHtml, "text/html");
-      const richHtml = documentNode.body.innerHTML;
+      const tableRoot = documentNode.querySelector("table[role='presentation']");
+      const richHtml = tableRoot?.outerHTML || documentNode.body.innerHTML;
       const plainText =
         documentNode.body.textContent?.replace(/\s+\n/g, "\n").trim() ||
         emailHtml;
-
-      if (copyHtmlViaEditable(richHtml)) {
-        setCopyState("copied");
-        return;
-      }
 
       if (
         "ClipboardItem" in window &&
@@ -57,51 +57,14 @@ export function GenerateEmailPage() {
           "text/html": new Blob([richHtml], { type: "text/html" }),
         });
 
-        try {
-          await navigator.clipboard.write([clipboardItem]);
-          setCopyState("copied");
-          return;
-        } catch {
-          /* fall through to plain text fallback */
-        }
+        await navigator.clipboard.write([clipboardItem]);
+      } else {
+        await navigator.clipboard.writeText(plainText);
       }
 
-      await navigator.clipboard.writeText(plainText);
       setCopyState("copied");
     } catch {
       setCopyState("error");
-    }
-  }
-
-  function copyHtmlViaEditable(html: string) {
-    try {
-      const element = document.createElement("div");
-      element.contentEditable = "true";
-      element.style.position = "absolute";
-      element.style.left = "-9999px";
-      element.style.top = "0";
-      element.style.opacity = "0";
-      element.innerHTML = html;
-      document.body.appendChild(element);
-
-      const selection = window.getSelection();
-      if (!selection) {
-        document.body.removeChild(element);
-        return false;
-      }
-
-      const range = document.createRange();
-      range.selectNodeContents(element);
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-      const success = document.execCommand("copy");
-      selection.removeAllRanges();
-      document.body.removeChild(element);
-
-      return success;
-    } catch {
-      return false;
     }
   }
 
