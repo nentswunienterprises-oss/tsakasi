@@ -181,7 +181,7 @@ function buildTemplateVariables(frontmatter, overrides, inputBaseName) {
     referenceNumber: frontmatter.referenceNumber || 'TKL-GEN-001',
     footer:
       frontmatter.footer ||
-      'Tsa Kasi Logistics | Professional delivery, merchant enablement, and growth support under Nenterprises.',
+      'Tsa Kasi Logistics (Pty) Ltd | Professional delivery, merchant enablement, and growth support under Nenterprises.',
     date: normalizeDateValue(frontmatter.date) || formatDocumentDate(new Date())
   };
 

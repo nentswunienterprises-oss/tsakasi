@@ -2,7 +2,7 @@
 documentTitle: Merchant Follow-Up Letter
 clientName: Romans Pizza Modimolle
 referenceNumber: TKL-2026-001
-footer: Tsa Kasi Logistics | Merchant support, delivery operations, and strategic growth under Nenterprises.
+footer: Tsa Kasi Logistics (Pty) Ltd | Merchant support, delivery operations, and strategic growth under Waterberg.
 ---
 
 Dear Romans Pizza Modimolle Team,

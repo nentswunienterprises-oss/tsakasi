@@ -72,7 +72,7 @@ documentTitle: Partnership Proposal
 clientName: Romans Pizza Modimolle
 referenceNumber: TKL-2026-001
 date: 29 June 2026
-footer: Tsa Kasi Logistics | Merchant support and delivery operations.
+footer: Tsa Kasi Logistics (Pty) Ltd | Merchant support and delivery operations.
 ---
 ```
 

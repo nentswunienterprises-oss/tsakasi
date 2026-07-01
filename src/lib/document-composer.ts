@@ -75,7 +75,7 @@ export const documentKindOptions: Array<{
 ];
 
 const DEFAULT_FOOTER =
-  "Tsa Kasi Logistics | Merchant support, delivery operations, and strategic growth under Nenterprises.";
+  "Tsa Kasi Logistics (Pty) Ltd | Merchant support, delivery operations, and strategic growth under Waterberg.";
 
 export function createDocumentComposerState(
   kind: DocumentKind = "letter",
@@ -448,7 +448,7 @@ function createBaseState(): Omit<DocumentComposerState, "documentTitle" | "kind"
       senderName: "Thendo Nentswuni",
       senderTitle: "Founder & CEO, Tsa Kasi Logistics",
       senderWebsite: "www.tsakasilogistics.co.za",
-      senderPhone: "079 536 1261",
+      senderPhone: "065 067 9891",
     },
     proposal: {
       executiveSummary:

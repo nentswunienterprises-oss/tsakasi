@@ -32,3 +32,4 @@ npm run build
 - Set `PILOT_WEBHOOK_URL` in Vercel to forward submissions into Airtable, HubSpot, Zapier, Make, or another workflow endpoint.
 - In local `vite` development, the form falls back to browser storage if the API route is unavailable.
 - For sent email logo rendering across Gmail/mobile, set `VITE_EMAIL_LOGO_URL` to a public `https://` image URL (PNG recommended), e.g. `https://www.tsakasilogistics.co.za/brand/tsa-kasi-logo.png`.
+- Draft persistence now syncs to Supabase via `api/document-drafts`. Ensure `SUPABASE_SERVICE_KEY` and `VITE_SUPABASE_URL` are set in production, and apply migration `supabase/migrations/002_create_document_composer_drafts.sql`.

@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import { type DocumentComposerState } from "@/lib/document-composer";
 import {
   buildDraftNameFromState,
+  deleteRemoteDocumentDraft,
+  loadActiveComposerDraft,
+  loadRemoteDocumentDrafts,
   loadSavedDocumentDrafts,
+  writeActiveComposerDraft,
+  writeRemoteDocumentDraft,
   writeSavedDocumentDrafts,
   type SavedDocumentDraft,
 } from "@/lib/document-drafts";
@@ -17,7 +22,31 @@ export function useDocumentDrafts(
   const [drafts, setDrafts] = useState<SavedDocumentDraft[]>([]);
 
   useEffect(() => {
-    setDrafts(loadSavedDocumentDrafts());
+    const localDrafts = loadSavedDocumentDrafts();
+    setDrafts(localDrafts);
+
+    void (async () => {
+      const remoteDrafts = await loadRemoteDocumentDrafts();
+
+      if (!remoteDrafts) {
+        return;
+      }
+
+      setDrafts(remoteDrafts);
+      writeSavedDocumentDrafts(remoteDrafts);
+    })();
+
+    const activeDraft = loadActiveComposerDraft();
+
+    if (!activeDraft) {
+      return;
+    }
+
+    onLoadComposer(activeDraft.state);
+    setDraftName(activeDraft.name || buildDraftNameFromState(activeDraft.state));
+    setDraftStatus("Restored last working draft.");
+    // Run once on mount only. The callback identity is stable in page components.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -37,6 +66,15 @@ export function useDocumentDrafts(
     return () => window.clearTimeout(timeoutId);
   }, [draftStatus]);
 
+  useEffect(() => {
+    const autosaveName = draftName.trim() || buildDraftNameFromState(composer);
+    const timeoutId = window.setTimeout(() => {
+      writeActiveComposerDraft(autosaveName, composer);
+    }, 500);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [composer, draftName]);
+
   function saveDraft() {
     const normalizedName = draftName.trim() || buildDraftNameFromState(composer);
     const existingDraft = drafts.find((draft) => draft.name === normalizedName);
@@ -53,6 +91,7 @@ export function useDocumentDrafts(
     setDraftName(normalizedName);
     setDrafts(nextDrafts);
     writeSavedDocumentDrafts(nextDrafts);
+    void writeRemoteDocumentDraft(nextDraft);
     setDraftStatus(existingDraft ? "Draft updated." : "Draft saved.");
   }
 
@@ -73,6 +112,7 @@ export function useDocumentDrafts(
     const nextDrafts = drafts.filter((draft) => draft.id !== draftId);
     setDrafts(nextDrafts);
     writeSavedDocumentDrafts(nextDrafts);
+    void deleteRemoteDocumentDraft(draftId);
     setDraftStatus("Draft deleted.");
   }
 
