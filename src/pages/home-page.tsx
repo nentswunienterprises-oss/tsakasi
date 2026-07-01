@@ -143,7 +143,7 @@ export function HomePage() {
       <FleetGallery
         eyebrow="Atlas Reference"
         title="Atlas introduces a compact electric cargo format for merchant and parcel movement."
-        description="The Atlas images make the cargo-oriented fleet logic concrete: compact enclosed EV form, rear payload utility, and a stronger clean-logistics signal for local route execution."
+        description="Compact enclosed EV form, rear payload utility, and a stronger clean-logistics signal for local route execution."
         items={fleetGallery.atlas}
       />
 

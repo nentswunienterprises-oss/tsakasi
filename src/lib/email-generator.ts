@@ -23,7 +23,7 @@ const DEFAULT_VARIABLES: EmailDocumentVariables = {
   date: formatDocumentDate(new Date()),
   documentTitle: "General Letter",
   footer:
-    "Tsa Kasi Logistics | Merchant support, delivery operations, and strategic growth under Nenterprises.",
+    "Tsa Kasi Logistics (Pty) Ltd | Merchant support, delivery operations, and strategic growth under Waterberg.",
   referenceNumber: "TKL-GEN-001",
 };
 
@@ -32,7 +32,7 @@ const SAMPLE_DOCUMENTS: Record<SampleDocumentKey, string> = {
 documentTitle: Merchant Follow-Up Letter
 clientName: Romans Pizza Modimolle
 referenceNumber: TKL-2026-001
-footer: Tsa Kasi Logistics | Merchant support, delivery operations, and strategic growth under Nenterprises.
+footer: Tsa Kasi Logistics (Pty) Ltd | Merchant support, delivery operations, and strategic growth under Waterberg.
 ---
 
 Dear Romans Pizza Modimolle Team,
@@ -193,7 +193,7 @@ export function buildEmailClipboardHtml(
 
   return `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin:0; border-collapse:collapse; background-color:#ffffff; border:1px solid #d8e0e8; font-family:Aptos, 'Segoe UI', Arial, sans-serif; color:#0f1720; table-layout:fixed;">
   <tr>
-    <td style="padding:24px 18px 20px; background-color:#050505; text-align:center;">
+    <td style="padding:24px 18px 20px; background-color:#000000; text-align:center;">
       <div style="padding-bottom:12px;">${resolvedLogoMarkup}</div>
       <div style="font-size:30px; line-height:1.15; font-weight:800; color:#ffffff; letter-spacing:-0.03em; padding-bottom:12px; word-break:break-word;">${escapeHtml(variables.documentTitle)}</div>
       <div style="font-size:0; text-align:center;">
