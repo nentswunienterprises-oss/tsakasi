@@ -44,23 +44,64 @@ export function GenerateEmailPage() {
         documentNode.body.textContent?.replace(/\s+\n/g, "\n").trim() ||
         emailHtml;
 
+      if (copyHtmlViaEditable(richHtml)) {
+        setCopyState("copied");
+        return;
+      }
+
       if (
         "ClipboardItem" in window &&
         typeof navigator.clipboard.write === "function"
       ) {
         const clipboardItem = new ClipboardItem({
           "text/html": new Blob([richHtml], { type: "text/html" }),
-          "text/plain": new Blob([plainText], { type: "text/plain" }),
         });
 
-        await navigator.clipboard.write([clipboardItem]);
-      } else {
-        await navigator.clipboard.writeText(plainText);
+        try {
+          await navigator.clipboard.write([clipboardItem]);
+          setCopyState("copied");
+          return;
+        } catch {
+          /* fall through to plain text fallback */
+        }
       }
 
+      await navigator.clipboard.writeText(plainText);
       setCopyState("copied");
     } catch {
       setCopyState("error");
+    }
+  }
+
+  function copyHtmlViaEditable(html: string) {
+    try {
+      const element = document.createElement("div");
+      element.contentEditable = "true";
+      element.style.position = "absolute";
+      element.style.left = "-9999px";
+      element.style.top = "0";
+      element.style.opacity = "0";
+      element.innerHTML = html;
+      document.body.appendChild(element);
+
+      const selection = window.getSelection();
+      if (!selection) {
+        document.body.removeChild(element);
+        return false;
+      }
+
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      const success = document.execCommand("copy");
+      selection.removeAllRanges();
+      document.body.removeChild(element);
+
+      return success;
+    } catch {
+      return false;
     }
   }
 
